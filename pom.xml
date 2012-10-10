@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.springframework.data</groupId>
+  <artifactId>spring-data-orientdb-dist</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Spring Data OrientDB Distribution</name>
+  <description>Spring Data OrientDB Distribution Module</description>
+  <url>http://www.orientdb.org</url>
+  <modules>
+  	<module>spring-data-orientdb-parent</module>
+    <module>spring-data-orientdb-document</module>
+    <module>spring-data-orientdb-commons</module>
+  </modules>
+  <properties>
+    <dist.version>${project.version}</dist.version>
+  </properties>
+  
+  <developers>
+    <developer>
+      <id>l.garulli</id>
+      <name>Luca Garulli</name>
+      <organization>Nuvola Base</organization>
+      <organizationUrl>http://www.nuvolabase.com</organizationUrl>
+      <roles>
+        <role>Project Admin</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>flatif</id>
+      <name>Forat Latif</name>
+      <email>forat.latif -at- gmail.com</email>
+      <roles>
+        <role>Project Admin</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <comments>
+        Copyright 2012 the original author or authors.
+
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+        implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+      </comments>
+    </license>
+  </licenses>
+  
+</project>
