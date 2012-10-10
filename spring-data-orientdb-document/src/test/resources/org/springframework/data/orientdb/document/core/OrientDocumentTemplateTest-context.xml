@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+ 
+	<bean id="orientDbFactory" class="org.springframework.data.orientdb.document.core.SimpleOrientDocumentDbFactory">
+		<constructor-arg name="dbURI" value="memory:testDB"/>
+		<constructor-arg name="credentials" >
+			<bean class="org.springframework.data.authentication.UserCredentials">
+				<constructor-arg name="username" value="admin"/>
+				<constructor-arg name="password" value="admin"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="mappingContext" class="org.springframework.data.orientdb.document.core.mapping.OrientDocumentMappingContext" />
+	
+	<bean id="orientDocumentOperations" class="org.springframework.data.orientdb.document.core.OrientDocumentTemplate">
+		<constructor-arg name="dbFactory" ref="orientDbFactory"/>
+		<constructor-arg name="converter" ref="orientDocumentConverter"/>
+	</bean>
+	
+	<bean id="orientDocumentConverter" class="org.springframework.data.orientdb.document.core.convert.MappingOrientDocumentConverter">
+		<constructor-arg name="dbFactory" ref="orientDbFactory"/>
+		<constructor-arg name="mappingContext" ref="mappingContext"/>
+	</bean>
+
+
+</beans>
