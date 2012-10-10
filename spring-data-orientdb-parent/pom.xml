@@ -1,0 +1,162 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.springframework.data</groupId>
+	<artifactId>spring-data-orientdb-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>Spring Data OrientDB Parent</name>
+	<description>Manages Dependencies of all modules</description>
+	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- versions for commonly-used dependencies -->
+		<junit.version>4.10</junit.version>
+		<log4j.version>1.2.17</log4j.version>
+		<org.springframework.version.31>3.1.0.RELEASE</org.springframework.version.31>
+		<org.springframework.version.40>4.0.0.RELEASE</org.springframework.version.40>
+		<org.springframework.version.range>[${org.springframework.version.31},
+			${org.springframework.version.40})</org.springframework.version.range>
+		<data.commons.version>1.4.0.RC1</data.commons.version>
+		<orientdb.version>1.1.0</orientdb.version>
+		<data.orientdb.commons.version>0.0.1-SNAPSHOT</data.orientdb.commons.version>
+		<org.slf4j.version>1.6.1</org.slf4j.version>
+
+	</properties>
+
+  <repositories>
+    <repository>
+	    <id>spring-milestone</id>
+	    <name>Spring Maven MILESTONE Repository</name>
+	    <url>http://maven.springframework.org/milestone</url>
+	</repository>
+  </repositories>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- Spring Dependencies -->
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${org.springframework.version.range}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${org.springframework.version.range}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${org.springframework.version.range}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${org.springframework.version.range}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${org.springframework.version.range}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${org.springframework.version.range}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${org.springframework.version.range}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-expression</artifactId>
+				<version>${org.springframework.version.range}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${org.springframework.version.range}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-commons-core</artifactId>
+				<version>${data.commons.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-commons-core</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+
+			<!-- ORIENTDB DEPENDENCIES -->
+
+			<dependency>
+				<groupId>com.orientechnologies</groupId>
+				<artifactId>orient-commons</artifactId>
+				<version>${orientdb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.orientechnologies</groupId>
+				<artifactId>orientdb-core</artifactId>
+				<version>${orientdb.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.orientechnologies</groupId>
+				<artifactId>orientdb-client</artifactId>
+				<version>${orientdb.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.orientechnologies</groupId>
+				<artifactId>orientdb-object</artifactId>
+				<version>${orientdb.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.orientechnologies</groupId>
+				<artifactId>orientdb-enterprise</artifactId>
+				<version>${orientdb.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.orientechnologies</groupId>
+				<artifactId>orientdb-graphdb</artifactId>
+				<version>${orientdb.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${org.slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${org.slf4j.version}</version>
+				<!-- <scope>test</scope> -->
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+</project>

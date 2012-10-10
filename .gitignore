@@ -1,0 +1,9 @@
+.DS_Store
+target
+.springBeans
+.sonar4clipse
+*.sonar4clipseExternals
+.settings/
+.project
+.classpath
+/.gradle/
