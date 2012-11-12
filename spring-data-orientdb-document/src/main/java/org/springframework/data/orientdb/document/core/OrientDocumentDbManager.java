@@ -17,9 +17,10 @@
 package org.springframework.data.orientdb.document.core;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.authentication.UserCredentials;
+import org.springframework.data.orientdb.core.OrientDbManager;
 
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 
 /**
  * 
@@ -27,12 +28,14 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
  *
  */
 
-public interface OrientDocumentDbFactory {
+public interface OrientDocumentDbManager extends OrientDbManager<ODatabaseDocumentTx> {
 
-	ODatabaseDocument getDocumentDatabase() throws DataAccessException;
+	ODatabaseDocumentTx getCurrentDatabase() throws DataAccessException;
 	
-	ODatabaseDocument getDocumentDatabase(String dbURI) throws DataAccessException;
+	ODatabaseDocumentTx getUnboundDatabase() throws DataAccessException;
 	
-	ODatabaseDocument getDocumentDatabase(String dbURI, UserCredentials credentials) throws DataAccessException;
+//	ODatabaseDocument getDatabase(String dbURI) throws DataAccessException;
+//	
+//	ODatabaseDocument getDatabase(String dbURI, UserCredentials credentials) throws DataAccessException;
 	
 }

@@ -18,8 +18,8 @@ package org.springframework.data.orientdb.document.core;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,20 +40,23 @@ import com.orientechnologies.orient.core.record.impl.ODocument;
 @ContextConfiguration
 public class OrientDocumentTemplateTest {
 
-	private static ODatabaseDocument db;
+	private ODatabaseDocument db;
 	
 	@Autowired
 	private OrientDocumentOperations orientDocumentOperations;
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		db = new ODatabaseDocumentTx("memory:testDB");
-	    if( !db.exists() )
-	      db.create(); 
+	    if(db.exists()) {
+	    	db.open("admin", "admin");
+	    	db.drop();
+	    }
+	    db.create(); 
 	}
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		if (db.exists())
 			db.drop();
 	}

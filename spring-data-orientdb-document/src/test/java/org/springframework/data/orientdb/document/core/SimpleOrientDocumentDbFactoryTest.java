@@ -16,11 +16,11 @@
 
 package org.springframework.data.orientdb.document.core;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,49 +43,89 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 public class SimpleOrientDocumentDbFactoryTest {
 
 	@Autowired
-	private OrientDocumentDbFactory orientDbFactory;
+	private SimpleOrientDocumentDbManager orientDbManager;
 	
-	private static ODatabaseDocument db;
+	private ODatabaseDocument db;
 	
-	@BeforeClass
-	public static void setUpBeforeClass() {
+	@Before
+	public void setUp() {
 		db = new ODatabaseDocumentTx("memory:testDB");
-	    if( !db.exists() )
-	      db.create(); 
+		if(db.exists()) {
+	    	db.open("admin", "admin");
+	    	db.drop();
+	    }
+	    db.create(); 
 	}
 	
-	@AfterClass
-	public static void tearDownAfterClass() {
+	@After
+	public void tearDown() {
 		if (db.exists())
 			db.drop();
 	}
 	
 	@Test
-	public void testgetDocumentDatabase() throws Exception {
-		ODatabaseDocument documentDatabase = orientDbFactory.getDocumentDatabase();
+	public void testgetCurrentDatabase() throws Exception {
+		ODatabaseDocument documentDatabase = orientDbManager.getCurrentDatabase();
 		assertNotNull(documentDatabase);
 		assertTrue(documentDatabase.exists());
 	}
 	
 	@Test
-	public void testgetDocumentDatabaseWithExistentName() throws Exception {
-		ODatabaseDocument documentDatabase = orientDbFactory.getDocumentDatabase("memory:testDB");
+	public void testgetDatabaseWithExistentName() throws Exception {
+		ODatabaseDocument documentDatabase = orientDbManager.getBoundDatabase("memory:testDB", orientDbManager.getCredentials());
 		assertNotNull(documentDatabase);
 		assertTrue(documentDatabase.exists());
 	}
 	
 	@Test(expected=OConnectionException.class)
-	public void testgetDocumentDatabaseWithNonExistentName() throws Exception {
-		ODatabaseDocument documentDatabase = orientDbFactory.getDocumentDatabase("memory:NonExistentDB");
-		assertNotNull(documentDatabase);
-		assertTrue(!documentDatabase.exists());
+	public void testgetDatabaseWithNonExistentName() throws Exception {
+		orientDbManager.getBoundDatabase("memory:NonExistentDB", orientDbManager.getCredentials());
 	}
 	
 	@Test
-	public void testgetDocumentDatabaseWithNameAndUserCredentials() throws Exception {
-		ODatabaseDocument documentDatabase = orientDbFactory.getDocumentDatabase("memory:testDB", new UserCredentials("admin", "admin"));
+	public void testgetDatabaseWithNameAndUserCredentials() throws Exception {
+		ODatabaseDocument documentDatabase = orientDbManager.getBoundDatabase("memory:testDB", new UserCredentials("admin", "admin"));
 		assertNotNull(documentDatabase);
 		assertTrue(documentDatabase.exists());
+	}
+	
+	@Test
+	public void testgetUnboundDatabase() throws Exception {
+		ODatabaseDocument database = orientDbManager.getCurrentDatabase();
+		assertNotNull(database);
+		assertTrue(database.exists());
+		
+		ODatabaseDocument unboundDatabase = orientDbManager.getUnboundDatabase();
+		assertNotNull(unboundDatabase);
+		assertTrue(unboundDatabase.exists());
+		
+		assertNotSame(database, unboundDatabase);
+		
+		orientDbManager.releaseCurrentDatabase();
+		
+		assertTrue(database.isClosed());
+		assertTrue(!unboundDatabase.isClosed());
+		
+		unboundDatabase.close();
+		
+	}
+	
+	@Test
+	public void testreleaseDatabase()  {
+		
+		String dbUrl = "memory:NonExistentDB12345";
+		db = new ODatabaseDocumentTx(dbUrl);
+		assertTrue(!db.exists());
+		
+	    db.create();
+		orientDbManager.releaseDatabase(db);
+
+		assertTrue(db.isClosed());
+		
+		db = new ODatabaseDocumentTx(dbUrl);
+		if (db.exists())
+			db.drop();
+		
 	}
 	
 

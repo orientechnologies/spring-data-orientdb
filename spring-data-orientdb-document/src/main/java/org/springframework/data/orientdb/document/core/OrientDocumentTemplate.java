@@ -37,16 +37,16 @@ import com.orientechnologies.orient.core.record.impl.ODocument;
 public class OrientDocumentTemplate implements OrientDocumentOperations {
 
 	private OrientDocumentConverter converter;
-	private OrientDocumentDbFactory dbFactory;
+	private OrientDocumentDbManager dbManager;
 	private final MappingContext<? extends OrientDocumentPersistentEntity<?>, OrientDocumentPersistentProperty> mappingContext;
 	
-	public OrientDocumentTemplate(OrientDocumentDbFactory dbFactory, OrientDocumentConverter converter) {
+	public OrientDocumentTemplate(OrientDocumentDbManager dbManager, OrientDocumentConverter converter) {
 		this.converter = converter;
-		this.dbFactory = dbFactory;
+		this.dbManager = dbManager;
 		this.mappingContext = this.converter.getMappingContext();
 	}
 	
-	public OrientDocumentTemplate(OrientDocumentDbFactory dbFactory) {
+	public OrientDocumentTemplate(OrientDocumentDbManager dbFactory) {
 		this (dbFactory, null);
 	}
 	

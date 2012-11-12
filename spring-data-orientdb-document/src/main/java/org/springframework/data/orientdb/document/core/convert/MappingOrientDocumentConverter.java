@@ -26,7 +26,7 @@ import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.mapping.model.BeanWrapper;
 import org.springframework.data.mapping.model.MappingException;
 import org.springframework.data.mapping.model.SpELContext;
-import org.springframework.data.orientdb.document.core.OrientDocumentDbFactory;
+import org.springframework.data.orientdb.document.core.OrientDocumentDbManager;
 import org.springframework.data.orientdb.document.core.mapping.OrientDocumentPersistentEntity;
 import org.springframework.data.orientdb.document.core.mapping.OrientDocumentPersistentProperty;
 import org.springframework.data.util.ClassTypeInformation;
@@ -48,7 +48,7 @@ public class MappingOrientDocumentConverter extends AbstractOrientDocumentConver
 
 	protected final MappingContext<? extends OrientDocumentPersistentEntity<?>, OrientDocumentPersistentProperty> mappingContext;
 	protected final SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
-	protected final OrientDocumentDbFactory dbFactory;
+	protected final OrientDocumentDbManager dbManager;
 //	protected final QueryMapper idMapper;
 	protected ApplicationContext applicationContext;
 	protected boolean useFieldAccessOnly = true;
@@ -59,15 +59,15 @@ public class MappingOrientDocumentConverter extends AbstractOrientDocumentConver
 	
 	//TODO: Create the conversion service the right way
 	
-	public MappingOrientDocumentConverter(OrientDocumentDbFactory dbFactory,
+	public MappingOrientDocumentConverter(OrientDocumentDbManager dbManager,
 			MappingContext<? extends OrientDocumentPersistentEntity<?>, OrientDocumentPersistentProperty> mappingContext) {
 		
 		super(ConversionServiceFactory.createDefaultConversionService());
 
-		Assert.notNull(dbFactory);
+		Assert.notNull(dbManager);
 		Assert.notNull(mappingContext);
 
-		this.dbFactory = dbFactory;
+		this.dbManager = dbManager;
 		this.mappingContext = mappingContext;
 //		this.typeMapper = new DefaultMongoTypeMapper(DefaultMongoTypeMapper.DEFAULT_TYPE_KEY, mappingContext);
 //		this.idMapper = new QueryMapper(this);
