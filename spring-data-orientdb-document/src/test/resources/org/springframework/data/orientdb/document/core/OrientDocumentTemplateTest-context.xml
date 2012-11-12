@@ -4,7 +4,7 @@
 			 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
  
-	<bean id="orientDbFactory" class="org.springframework.data.orientdb.document.core.SimpleOrientDocumentDbFactory">
+	<bean id="orientDbManager" class="org.springframework.data.orientdb.document.core.SimpleOrientDocumentDbManager">
 		<constructor-arg name="dbURI" value="memory:testDB"/>
 		<constructor-arg name="credentials" >
 			<bean class="org.springframework.data.authentication.UserCredentials">
@@ -17,12 +17,12 @@
 	<bean id="mappingContext" class="org.springframework.data.orientdb.document.core.mapping.OrientDocumentMappingContext" />
 	
 	<bean id="orientDocumentOperations" class="org.springframework.data.orientdb.document.core.OrientDocumentTemplate">
-		<constructor-arg name="dbFactory" ref="orientDbFactory"/>
+		<constructor-arg name="dbManager" ref="orientDbManager"/>
 		<constructor-arg name="converter" ref="orientDocumentConverter"/>
 	</bean>
 	
 	<bean id="orientDocumentConverter" class="org.springframework.data.orientdb.document.core.convert.MappingOrientDocumentConverter">
-		<constructor-arg name="dbFactory" ref="orientDbFactory"/>
+		<constructor-arg name="dbManager" ref="orientDbManager"/>
 		<constructor-arg name="mappingContext" ref="mappingContext"/>
 	</bean>
 
