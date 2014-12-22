@@ -7,3 +7,8 @@ target
 .project
 .classpath
 /.gradle/
+.idea
+*.iml
+*.ipr
+*.iws
+atlassian-ide-plugin.xml
