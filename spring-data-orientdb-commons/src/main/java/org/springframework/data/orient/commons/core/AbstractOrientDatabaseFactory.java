@@ -1,12 +1,14 @@
 package org.springframework.data.orient.commons.core;
 
+import com.orientechnologies.orient.core.db.ODatabase;
 import com.orientechnologies.orient.core.db.ODatabaseInternal;
 import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
+
+import static org.springframework.util.Assert.notNull;
 
 /**
  * A base factory for creating {@link com.orientechnologies.orient.core.db.ODatabase} objects.
@@ -14,16 +16,16 @@ import javax.annotation.PostConstruct;
  * @author Dzmitry_Naskou
  * @param <T> the type of database to handle
  */
-public abstract class AbstractOrientDatabaseFactory<T extends ODatabaseInternal<?>> implements OrientDatabaseFactory<T> {
+public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabaseFactory<T> {
 
     /** The logger. */
     private static Logger log = LoggerFactory.getLogger(AbstractOrientDatabaseFactory.class);
 
     /** The username. */
-    protected String username;
+    protected String username = DEFAULT_USERNAME;
 
     /** The password. */
-    protected String password;
+    protected String password = DEFAULT_PASSWORD;
 
     /** The min pool size. */
     protected int minPoolSize = DEFAULT_MIN_POOL_SIZE;
@@ -35,11 +37,11 @@ public abstract class AbstractOrientDatabaseFactory<T extends ODatabaseInternal<
     
     @PostConstruct
     public void init() {
-        Assert.notNull(url);
-        Assert.notNull(username);
-        Assert.notNull(password);
+        notNull(url);
+        notNull(username);
+        notNull(password);
 
-        ODatabaseInternal<?> db = newDatabase();
+        ODatabase<?> db = newDatabase();
         createDatabase(db);
         createPool();
     }
@@ -51,12 +53,12 @@ public abstract class AbstractOrientDatabaseFactory<T extends ODatabaseInternal<
      *
      * @return the o database complex
      */
-    public abstract ODatabaseInternal<?> openDatabase();
+    public abstract ODatabase<T> openDatabase();
 
     protected abstract ODatabaseInternal<?> newDatabase();
 
-    public ODatabaseInternal<?> db() {
-        ODatabaseInternal<?> db;
+    public ODatabase<?> db() {
+        ODatabase<?> db;
         if(!ODatabaseRecordThreadLocal.INSTANCE.isDefined()) {
             db = openDatabase();
             log.debug("acquire db from pool {}", db.hashCode());
@@ -68,7 +70,7 @@ public abstract class AbstractOrientDatabaseFactory<T extends ODatabaseInternal<
         return db;
     }
 
-    protected void createDatabase(ODatabaseInternal<?> db) {
+    protected void createDatabase(ODatabase<?> db) {
         if (!getUrl().startsWith("remote:")) {
             if (!db.exists()) {
                 db.create();

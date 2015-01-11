@@ -2,6 +2,8 @@ package org.springframework.data.orient.document;
 
 import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.core.record.ORecord;
+import com.orientechnologies.orient.core.record.impl.ODocument;
 import org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactory;
 
 /**
@@ -10,7 +12,7 @@ import org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactor
  * @author Dzmitry_Naskou
  * @see com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx
  */
-public class OrientDocumentDatabaseFactory extends AbstractOrientDatabaseFactory<ODatabaseDocumentTx> {
+public class OrientDocumentDatabaseFactory extends AbstractOrientDatabaseFactory<ORecord> {
 
     private OPartitionedDatabasePool pool;
 
