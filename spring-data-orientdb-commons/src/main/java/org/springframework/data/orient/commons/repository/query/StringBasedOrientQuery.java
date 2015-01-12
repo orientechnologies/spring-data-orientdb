@@ -19,7 +19,7 @@ public class StringBasedOrientQuery extends AbstractOrientQuery {
 
     @Override
     @SuppressWarnings("rawtypes")
-    protected OSQLQuery doCreateQuery(Object[] values) {
+    protected OSQLQuery<?> doCreateQuery(Object[] values) {
         OrientParameterAccessor accessor = new OrientParametersParameterAccessor(getQueryMethod().getParameters(), values);
         String sortedQuery = QueryUtils.applySorting(queryString, accessor.getSort());
         
@@ -28,7 +28,7 @@ public class StringBasedOrientQuery extends AbstractOrientQuery {
 
     @Override
     @SuppressWarnings("rawtypes")
-    protected OSQLQuery doCreateCountQuery(Object[] values) {
+    protected OSQLQuery<?> doCreateCountQuery(Object[] values) {
         return new OSQLSynchQuery<ODocument>(queryString);
     }
 

@@ -88,11 +88,6 @@ public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContext
     }
 
     @Test
-    public void findByLastNameTest() {
-        logger.debug("Employee: {}", repository.findByLastName("Naskou"));
-    }
-
-    @Test
     public void checkClasses() {
         OObjectDatabaseTx db = dbf.openDatabase();
 
@@ -131,6 +126,10 @@ public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContext
         repository.findByFirstName("Dzmitry", new DefaultCluster(EMPLOYEE_TMP_CLUSTER));
     }
 
+    @Test
+    public void findByLastNameTest() {
+        logger.debug("Employee: {}", repository.findByLastName("Naskou"));
+    }
 
     @Test
     public void saveEmployeeToTmpCluster() {

@@ -1,6 +1,5 @@
 package org.springframework.data.orient.object.repository.support;
 
-import org.springframework.data.orient.commons.core.OrientOperations;
 import org.springframework.data.orient.commons.repository.support.SimpleOrientRepository;
 import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.repository.OrientObjectRepository;
@@ -24,15 +23,17 @@ public class SimpleOrientObjectRepository<T> extends SimpleOrientRepository<T> i
      * @param domainClass the domain class
      * @param repositoryInterface the target repository interface
      */
-    public SimpleOrientObjectRepository(OrientOperations operations, Class<T> domainClass, Class<?> repositoryInterface) {
+    public SimpleOrientObjectRepository(OrientObjectOperations operations, Class<T> domainClass, Class<?> repositoryInterface) {
         super(operations, domainClass, repositoryInterface);
     }
     
-    public SimpleOrientObjectRepository(OrientOperations operations, Class<T> domainClass, String cluster, Class<?> repositoryInterface) {
+    public SimpleOrientObjectRepository(OrientObjectOperations operations, Class<T> domainClass, String cluster, Class<?> repositoryInterface) {
         super(operations, domainClass, cluster, repositoryInterface);
     }
 
     public T detachAll(T entity) {
-        return ((OrientObjectOperations) super.operations).detachAll(entity, true);
+        // TODO: solve this issue
+        //return ((OrientObjectOperations) super.operations).detachAll(entity, true);
+        return entity;
     }
 }

@@ -1,6 +1,7 @@
 package org.springframework.data.orient.object;
 
 import com.orientechnologies.orient.core.entity.OEntityManager;
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -55,18 +56,20 @@ public class OrientDbObjectTestConfiguration {
 
     @PostConstruct
     public void registerEntities() {
-        OEntityManager em = factory().db().getEntityManager();
+        OObjectDatabaseTx db = factory().db();
+
+        OEntityManager em = db.getEntityManager();
         em.registerEntityClass(Person.class);
         em.registerEntityClass(Address.class);
         em.registerEntityClass(Employee.class);
 
-        if (!factory().db().existsCluster(EMPLOYEE_TMP_CLUSTER)) {
-            int id = factory().db().addCluster(EMPLOYEE_TMP_CLUSTER);
-            factory().db().getMetadata().getSchema().getClass(Employee.class).addClusterId(id);
+        if (!db.existsCluster(EMPLOYEE_TMP_CLUSTER)) {
+            int id = db.addCluster(EMPLOYEE_TMP_CLUSTER);
+            db.getMetadata().getSchema().getClass(Employee.class).addClusterId(id);
         }
-        if (!factory().db().existsCluster(EMPLOYEE_HISTORY_CLUSTER)) {
-            int id = factory().db().addCluster(EMPLOYEE_HISTORY_CLUSTER);
-            factory().db().getMetadata().getSchema().getClass(Employee.class).addClusterId(id);
+        if (!db.existsCluster(EMPLOYEE_HISTORY_CLUSTER)) {
+            int id = db.addCluster(EMPLOYEE_HISTORY_CLUSTER);
+            db.getMetadata().getSchema().getClass(Employee.class).addClusterId(id);
         }
     }
 }

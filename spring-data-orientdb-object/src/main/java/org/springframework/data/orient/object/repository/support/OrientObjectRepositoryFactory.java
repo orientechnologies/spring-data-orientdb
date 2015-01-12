@@ -1,13 +1,13 @@
 package org.springframework.data.orient.object.repository.support;
 
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.data.orient.commons.core.OrientOperations;
 import org.springframework.data.orient.commons.repository.SourceType;
 import org.springframework.data.orient.commons.repository.annotation.Cluster;
 import org.springframework.data.orient.commons.repository.annotation.Source;
 import org.springframework.data.orient.commons.repository.query.OrientQueryLookupStrategy;
 import org.springframework.data.orient.commons.repository.support.OrientMetamodelEntityInformation;
 import org.springframework.data.orient.commons.repository.support.SimpleOrientRepository;
+import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.repository.OrientObjectRepository;
 import org.springframework.data.repository.core.EntityInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
@@ -19,9 +19,9 @@ import java.io.Serializable;
 // TODO: find out why inheriting from OrientRepositoryFactory does not work; would save some code; but this here works
 public class OrientObjectRepositoryFactory extends RepositoryFactorySupport {
 
-    private final OrientOperations operations;
+    private final OrientObjectOperations operations;
 
-    public OrientObjectRepositoryFactory(OrientOperations operations) {
+    public OrientObjectRepositoryFactory(OrientObjectOperations operations) {
         super();
         this.operations = operations;
     }

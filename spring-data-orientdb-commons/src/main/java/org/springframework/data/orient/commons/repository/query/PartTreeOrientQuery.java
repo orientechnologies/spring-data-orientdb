@@ -43,7 +43,7 @@ public class PartTreeOrientQuery extends AbstractOrientQuery {
      */
     @Override
     @SuppressWarnings("rawtypes")
-    protected OSQLQuery doCreateQuery(Object[] values) {
+    protected OSQLQuery<?> doCreateQuery(Object[] values) {
         OrientParameterAccessor accessor = new OrientParametersParameterAccessor(parameters, values);
         
         OrientQueryCreator creator = new OrientQueryCreator(tree, method, accessor);
@@ -56,7 +56,7 @@ public class PartTreeOrientQuery extends AbstractOrientQuery {
      */
     @Override
     @SuppressWarnings("rawtypes")
-    protected OSQLQuery doCreateCountQuery(Object[] values) {
+    protected OSQLQuery<?> doCreateCountQuery(Object[] values) {
         OrientParameterAccessor accessor = new OrientParametersParameterAccessor(parameters, values);
         
         OrientQueryCreator creator = new OrientCountQueryCreator(tree, method, accessor);

@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.orient.commons.core.OrientOperations;
 import org.springframework.data.orient.object.OrientDbObjectTestConfiguration;
 import org.springframework.data.orient.object.OrientObjectDatabaseFactory;
+import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.domain.Address;
 import org.springframework.data.orient.object.domain.Person;
 import org.springframework.test.annotation.DirtiesContext;
@@ -40,7 +40,7 @@ public class PersonRepositoryTest extends AbstractTestNGSpringContextTests {
     OrientObjectDatabaseFactory factory;
     
     @Autowired
-    OrientOperations operations;
+    OrientObjectOperations operations;
     
     @BeforeClass
     public void before() {
@@ -71,53 +71,57 @@ public class PersonRepositoryTest extends AbstractTestNGSpringContextTests {
         assertEquals(result.getFirstName(), person.getFirstName());
         assertEquals(result.getLastName(), person.getLastName());
     }
-    
+
     @Test
     public void findAllPersons() {
         assertFalse(repository.findAll().isEmpty());
     }
-    
+
     @Test
     public void countPerson() {
         assertEquals(repository.count(), 5L);
     }
 
     @Test
-    public void countByFirstName() {
-        assertEquals(repository.countByFirstName("Dzmitry"), Long.valueOf(1));
-    }
-    
-    @Test
-    public void findByFirstName() {
-        assertFalse(repository.findByFirstName("Dzmitry").isEmpty());
-    }
-    
-    @Test
     public void findByFirstNamePage() {
         for (Person person : repository.findByFirstName("Dzmitry", new PageRequest(1, 5)).getContent()) {
             assertEquals(person.getFirstName(), "Dzmitry");
         }
     }
-    
+
+    @Test
+    public void countByFirstName() {
+        assertEquals(repository.countByFirstName("Dzmitry"), Long.valueOf(1));
+    }
+
+    @Test
+    public void printFindByLastName() {
+        List<Person> result = repository.findByLastName("Naskou");
+
+        assertFalse(result.isEmpty());
+
+        for (Person person : result) {
+            assertEquals(person.getLastName(), "Naskou");
+        }
+    }
+
+    @Test
+    public void findByFirstName() {
+        assertFalse(repository.findByFirstName("Dzmitry").isEmpty());
+    }
+
     @Test
     public void findByFirstNameLike() {
         for (Person person : repository.findByFirstNameLike("Dzm%")) {
             assertTrue(person.getFirstName().startsWith("Dzm"));
         }
     }
-    
+
     @Test
     public void findByLastName() {
         assertFalse(repository.findByLastName("Naskou").isEmpty());
     }
-    
-    @Test
-    public void printFindByLastName() {
-        for (Person person : repository.findByLastName("Naskou")) {
-            assertEquals(person.getLastName(), "Naskou");
-        }
-    }
-    
+
     @Test
     public void findByLastNameLike() {
         for (Person person : repository.findByLastNameLike("Na%")) {
@@ -138,27 +142,27 @@ public class PersonRepositoryTest extends AbstractTestNGSpringContextTests {
             assertTrue(person.getFirstName().equals("Dzmitry") || person.getLastName().equals("Eliot"));
         }
     }
-    
+
     @Test
     public void findByActiveIsTrue() {
         for (Person person : repository.findByActiveIsTrue()) {
             assertTrue(person.getActive());
         }
     }
-    
+
     @Test
     public void findByActiveIsFalse() {
         for (Person person : repository.findByActiveIsFalse()) {
             assertFalse(person.getActive());
         }
     }
-    
+
     @Test
     public void findByCityTest() {
         List<Person> persons = repository.findByAddress_City("Minsk");
-        
+
         assertFalse(persons.isEmpty());
-        
+
         for (Person person : persons) {
             assertEquals(person.getAddress().getCity(), "Minsk");
         }

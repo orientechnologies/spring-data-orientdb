@@ -2,6 +2,7 @@ package org.springframework.data.orient.object.repository.support;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.orient.commons.core.OrientOperations;
+import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.data.repository.core.support.TransactionalRepositoryFactoryBeanSupport;
@@ -22,11 +23,8 @@ public class OrientObjectRepositoryFactoryBean<T extends Repository<S, ID>, S, I
 
     /** The orient operations. */
     @Autowired
-    private OrientOperations operations;
+    private OrientObjectOperations operations;
 
-    /* (non-Javadoc)
-     * @see org.springframework.data.repository.core.support.TransactionalRepositoryFactoryBeanSupport#doCreateRepositoryFactory()
-     */
     @Override
     protected RepositoryFactorySupport doCreateRepositoryFactory() {
         return new OrientObjectRepositoryFactory(operations);
