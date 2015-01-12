@@ -33,6 +33,8 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
     /** The max pool size. */
     protected int maxPoolSize = DEFAULT_MAX_POOL_SIZE;
 
+    protected Boolean autoCreate;
+
     protected String url;
     
     @PostConstruct
@@ -40,6 +42,10 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
         notNull(url);
         notNull(username);
         notNull(password);
+
+        if(autoCreate==null) {
+            autoCreate = !getUrl().startsWith("remote:");
+        }
 
         ODatabase<?> db = newDatabase();
         createDatabase(db);
@@ -77,7 +83,7 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
     }
 
     protected void createDatabase(ODatabase<?> db) {
-        if (!getUrl().startsWith("remote:")) {
+        if (autoCreate) {
             if (!db.exists()) {
                 db.create();
                 db.close();
@@ -173,5 +179,13 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
      */
     public void setMaxPoolSize(int maxPoolSize) {
         this.maxPoolSize = maxPoolSize;
+    }
+
+    public Boolean getAutoCreate() {
+        return autoCreate;
+    }
+
+    public void setAutoCreate(Boolean autoCreate) {
+        this.autoCreate = autoCreate;
     }
 }
