@@ -65,7 +65,7 @@ public abstract class AbstractOrientQuery implements RepositoryQuery {
      * @return the OSQL query
      */
     @SuppressWarnings("rawtypes")
-    protected OSQLQuery createQuery(Object[] values) {
+    protected OSQLQuery<?> createQuery(Object[] values) {
         return applyFetchPlan(doCreateQuery(values));
     }
     
@@ -76,7 +76,7 @@ public abstract class AbstractOrientQuery implements RepositoryQuery {
      * @return the OSQL query
      */
     @SuppressWarnings("rawtypes")
-    protected OSQLQuery createCountQuery(Object[] values) {
+    protected OSQLQuery<?> createCountQuery(Object[] values) {
         return doCreateCountQuery(values);
     }
     
@@ -87,7 +87,7 @@ public abstract class AbstractOrientQuery implements RepositoryQuery {
      * @return the OSQL query
      */
     @SuppressWarnings("rawtypes")
-    protected abstract OSQLQuery doCreateQuery(Object[] values);
+    protected abstract OSQLQuery<?> doCreateQuery(Object[] values);
     
     /**
      * Do create count query for specific source.
@@ -96,7 +96,7 @@ public abstract class AbstractOrientQuery implements RepositoryQuery {
      * @return the OSQL query
      */
     @SuppressWarnings("rawtypes")
-    protected abstract OSQLQuery doCreateCountQuery(Object[] values);
+    protected abstract OSQLQuery<?> doCreateCountQuery(Object[] values);
     
     /**
      * Gets the execution for query.
@@ -127,7 +127,7 @@ public abstract class AbstractOrientQuery implements RepositoryQuery {
     protected abstract boolean isCountQuery();
     
     @SuppressWarnings("rawtypes")
-    private OSQLQuery applyFetchPlan(OSQLQuery query) {
+    private OSQLQuery<?> applyFetchPlan(OSQLQuery query) {
         String fetchPlan = method.getFetchPlan();
         
         if (fetchPlan != null) {

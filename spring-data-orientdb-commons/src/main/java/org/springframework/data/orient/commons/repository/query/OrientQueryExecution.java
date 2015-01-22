@@ -36,8 +36,6 @@ public abstract class OrientQueryExecution {
      * @param values the parameters values
      * @return the result
      */
-    // TODO: move this to object module
-    @Deprecated
     public Object execute(AbstractOrientQuery query, DetachMode mode, Object[] values) {
         return doExecute(query, mode, values);
     }
@@ -49,8 +47,6 @@ public abstract class OrientQueryExecution {
      * @param values the parameters values
      * @return the result
      */
-    // TODO: move this to object module
-    @Deprecated
     protected abstract Object doExecute(AbstractOrientQuery query, DetachMode mode, Object[] values);
     
     /**
@@ -73,8 +69,7 @@ public abstract class OrientQueryExecution {
          * @see org.springframework.data.orient.repository.object.query.OrientQueryExecution#doExecute(org.springframework.data.orient.repository.object.query.AbstractOrientQuery, java.lang.Object[])
          */
         @Override
-        // TODO: move this to object module
-        @Deprecated
+        @SuppressWarnings("unchecked")
         protected Object doExecute(AbstractOrientQuery query, DetachMode mode, Object[] values) {
             return operations.query(query.createQuery(values), mode, prepareParameters(parameters, values));
         }
@@ -100,8 +95,6 @@ public abstract class OrientQueryExecution {
          * @see org.springframework.data.orient.repository.object.query.OrientQueryExecution#doExecute(org.springframework.data.orient.repository.object.query.AbstractOrientQuery, java.lang.Object[])
          */
         @Override
-        // TODO: move this to object module
-        @Deprecated
         protected Object doExecute(AbstractOrientQuery query, DetachMode mode, Object[] values) {
             return operations.queryForObject(query.createQuery(values), mode, prepareParameters(parameters, values));
         }
@@ -127,8 +120,7 @@ public abstract class OrientQueryExecution {
          * @see org.springframework.data.orient.repository.object.query.OrientQueryExecution#doExecute(org.springframework.data.orient.repository.object.query.AbstractOrientQuery, java.lang.Object[])
          */
         @Override
-        // TODO: move this to object module
-        @Deprecated
+        @SuppressWarnings("unchecked")
         protected Object doExecute(AbstractOrientQuery query, DetachMode mode, Object[] values) {
             return operations.count(query.createQuery(values), prepareParameters(parameters, values));
         }
@@ -155,8 +147,7 @@ public abstract class OrientQueryExecution {
          * @see org.springframework.data.orient.repository.object.query.OrientQueryExecution#doExecute(org.springframework.data.orient.repository.object.query.AbstractOrientQuery, java.lang.Object[])
          */
         @Override
-        // TODO: move this to object module
-        @Deprecated
+        @SuppressWarnings("unchecked")
         protected Object doExecute(AbstractOrientQuery query, DetachMode mode, Object[] values) {
             OrientParameterAccessor accessor = new OrientParametersParameterAccessor(parameters, values);
             
@@ -174,13 +165,13 @@ public abstract class OrientQueryExecution {
                 content = Collections.emptyList();
             }
             
-            return new PageImpl<Object>(content, pageable, total);
+            return new PageImpl<>(content, pageable, total);
         }
     }
     
-    Object[] prepareParameters(OrientParameters parameters, Object[] values) {
+    protected Object[] prepareParameters(OrientParameters parameters, Object[] values) {
         int index = 0;
-        List<Object> params = new ArrayList<Object>();
+        List<Object> params = new ArrayList<>();
         
         for (OrientParameter parameter : parameters) {
             if (parameter.isBindable()) {

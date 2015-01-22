@@ -1,5 +1,6 @@
 package org.springframework.data.orient.commons.core;
 
+import com.orientechnologies.orient.core.db.ODatabase;
 import com.orientechnologies.orient.core.db.ODatabaseInternal;
 import com.orientechnologies.orient.core.tx.OTransaction;
 
@@ -14,7 +15,7 @@ public class OrientTransaction {
     private OTransaction tx;
 
     /** The database. */
-    private ODatabaseInternal<?> database;
+    private ODatabase<?> database;
 
     public OTransaction getTx() {
         return tx;
@@ -24,11 +25,11 @@ public class OrientTransaction {
         this.tx = tx;
     }
 
-    public ODatabaseInternal<?> getDatabase() {
+    public ODatabase<?> getDatabase() {
         return database;
     }
 
-    public void setDatabase(ODatabaseInternal<?> database) {
+    public void setDatabase(ODatabase<?> database) {
         this.database = database;
     }
 }

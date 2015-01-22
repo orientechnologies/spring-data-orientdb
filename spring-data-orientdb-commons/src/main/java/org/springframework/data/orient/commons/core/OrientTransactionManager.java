@@ -27,14 +27,14 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     private static Logger log = LoggerFactory.getLogger(OrientTransactionManager.class);
 
     /** The database factory. */
-    private OrientDatabaseFactory<? extends ODatabase<?>> dbf;
+    private OrientDatabaseFactory<?> dbf;
 
     /**
      * Instantiates a new {@link OrientTransactionManager}.
      *
      * @param dbf the dbf
      */
-    public OrientTransactionManager(OrientDatabaseFactory<? extends ODatabase<?>> dbf) {
+    public OrientTransactionManager(OrientDatabaseFactory<?> dbf) {
         super();
         this.dbf = dbf;
     }
@@ -46,7 +46,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     protected Object doGetTransaction() throws TransactionException {
         OrientTransaction tx = new OrientTransaction();
 
-        ODatabaseInternal<?> db = (ODatabaseInternal<?>) TransactionSynchronizationManager.getResource(getResourceFactory());
+        ODatabase<?> db = (ODatabase<?>) TransactionSynchronizationManager.getResource(getResourceFactory());
         
         if (db != null) {
             tx.setDatabase(db);
@@ -73,7 +73,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     protected void doBegin(Object transaction, TransactionDefinition definition) throws TransactionException {
         OrientTransaction tx = (OrientTransaction) transaction;
 
-        ODatabaseInternal<?> db = tx.getDatabase();
+        ODatabase<?> db = tx.getDatabase();
         if (db == null || db.isClosed()) {
             db = dbf.openDatabase();
             tx.setDatabase(db);
@@ -91,7 +91,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     @Override
     protected void doCommit(DefaultTransactionStatus status) throws TransactionException {
         OrientTransaction tx = (OrientTransaction) status.getTransaction();
-        ODatabaseInternal<?> db = tx.getDatabase();
+        ODatabase<?> db = tx.getDatabase();
         
         log.debug("committing transaction, db.hashCode() = {}", db.hashCode());
         
@@ -104,7 +104,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     @Override
     protected void doRollback(DefaultTransactionStatus status) throws TransactionException {
         OrientTransaction tx = (OrientTransaction) status.getTransaction();
-        ODatabaseInternal<?> db = tx.getDatabase();
+        ODatabase<?> db = tx.getDatabase();
         
         log.debug("rolling back transaction, db.hashCode() = {}", db.hashCode());
         
@@ -140,9 +140,8 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     @Override
     protected Object doSuspend(Object transaction) throws TransactionException {
         OrientTransaction tx = (OrientTransaction) transaction;
-        ODatabaseInternal<?> db = tx.getDatabase();
-        
-        return db;
+
+        return tx.getDatabase();
     }
     
     /* (non-Javadoc)
@@ -151,7 +150,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     @Override
     protected void doResume(Object transaction, Object suspendedResources) throws TransactionException {
         OrientTransaction tx = (OrientTransaction) transaction;
-        ODatabaseInternal<?> db = tx.getDatabase();
+        ODatabase<?> db = tx.getDatabase();
         
         if (!db.isClosed()) {
             db.close();
@@ -172,20 +171,19 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 
     /**
      * Gets the database factory for the database managed by this transaction manager.
-     * 
+     *
      * @return the database
      */
-    public OrientDatabaseFactory<? extends ODatabase<?>> getDatabaseFactory() {
+    public OrientDatabaseFactory<?> getDatabaseFactory() {
         return dbf;
     }
 
     /**
      * Sets the database factory for the database managed by this transaction manager.
-     * 
+     *
      * @param databaseFactory the database to set
      */
-    public void setDatabaseManager(AbstractOrientDatabaseFactory<ODatabaseInternal<?>> databaseFactory) {
+    public void setDatabaseFactory(OrientDatabaseFactory<?> databaseFactory) {
         this.dbf = databaseFactory;
     }
 }
-

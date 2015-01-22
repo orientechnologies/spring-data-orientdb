@@ -5,7 +5,7 @@ import org.springframework.data.orient.commons.repository.query.QueryUtils;
 
 public class ClusteredOrientStrategy<T> implements OrientStrategy<T> {
     
-    private final OrientOperations operations;
+    private final OrientOperations<T> operations;
     
     private final String cluster;
     

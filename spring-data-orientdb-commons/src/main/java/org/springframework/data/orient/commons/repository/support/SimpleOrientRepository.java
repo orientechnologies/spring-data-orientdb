@@ -32,7 +32,7 @@ import java.util.List;
 public class SimpleOrientRepository<T> implements OrientRepository<T> {
 
     /** The orient operations. */
-    protected final OrientOperations operations;
+    protected final OrientOperations<T> operations;
     
     /** The domain class. */
     protected final Class<T> domainClass;
@@ -255,7 +255,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
     @Transactional(readOnly = false)
     public void deleteAll() {
         for (T entity : findAll()) {
-            operations.delete(entity);
+            delete(entity);
         }
     }
 
@@ -265,7 +265,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
     @Override
     public void deleteAll(String cluster) {
         for (T entity : findAll(cluster)) {
-            operations.delete(entity);
+            delete(entity);
         }
     }
 
@@ -275,7 +275,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
     @Override
     public void deleteAll(Class<? extends T> domainClass) {
         for (T entity : findAll(domainClass)) {
-            operations.delete(entity);
+            delete(entity);
         }
     }
 
@@ -341,7 +341,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
     /**
      * Creates the query for the given {@link org.springframework.data.domain.Sort}.
      *
-     * @param sort the sort
+     * @param pageable the pageable
      * @return the query
      */
     private OSQLQuery<T> getQuery(Pageable pageable) {

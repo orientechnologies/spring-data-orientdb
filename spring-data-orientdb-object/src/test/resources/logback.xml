@@ -7,20 +7,23 @@
     </appender>
 
     <!--
+    -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>target/orient-test.log</file>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    -->
 
     <!--
     <logger name="org.springframework" level="DEBUG" />
     <logger name="org.springframework.data.orientdb" level="DEBUG" />
     <logger name="org.springframework.data.orient.commons.core.OrientTransactionManager" level="DEBUG" />
+    <logger name="org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactory" level="DEBUG" />
+    <logger name="org.springframework.data.orient.object.OrientObjectDatabaseFactory" level="DEBUG" />
     -->
     <root level="INFO">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
     </root>
 </configuration>

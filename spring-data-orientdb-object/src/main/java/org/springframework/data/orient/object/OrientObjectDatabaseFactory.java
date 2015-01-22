@@ -10,7 +10,7 @@ import org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactor
  * @author Dzmitry_Naskou
  * @see com.orientechnologies.orient.object.db.OObjectDatabaseTx
  */
-public class OrientObjectDatabaseFactory extends AbstractOrientDatabaseFactory<OObjectDatabaseTx> {
+public class OrientObjectDatabaseFactory extends AbstractOrientDatabaseFactory<Object> {
 
     private OObjectDatabasePool pool;
 
