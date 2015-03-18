@@ -1,6 +1,5 @@
 package org.springframework.boot.autoconfigure.orient;
 
-import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -13,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.orient.commons.core.OrientDatabaseFactory;
 import org.springframework.data.orient.commons.core.OrientOperations;
 import org.springframework.data.orient.commons.core.OrientTransactionManager;
-import org.springframework.data.orient.document.OrientDocumentDatabaseFactory;
-import org.springframework.data.orient.document.OrientDocumentOperations;
-import org.springframework.data.orient.document.OrientDocumentTemplate;
 import org.springframework.data.orient.object.OrientObjectDatabaseFactory;
 import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.OrientObjectTemplate;
@@ -46,30 +42,12 @@ public class OrientAutoConfiguration {
         
         return factory;
     }
-    
-    @Bean
-    @ConditionalOnMissingClass(OObjectDatabaseTx.class)
-    @ConditionalOnMissingBean(OrientDocumentDatabaseFactory.class)
-    public OrientDocumentDatabaseFactory documentDatabaseFactory() {
-        OrientDocumentDatabaseFactory factory = new OrientDocumentDatabaseFactory();
-        
-        configure(factory);
-        
-        return factory;
-    }
-    
+
     @Bean
     @ConditionalOnClass(OObjectDatabaseTx.class)
     @ConditionalOnMissingBean(OrientObjectOperations.class)
     public OrientObjectTemplate objectTemplate(OrientObjectDatabaseFactory factory) {
         return new OrientObjectTemplate(factory);
-    }
-
-    @Bean
-    @ConditionalOnClass(ODatabaseDocumentTx.class)
-    @ConditionalOnMissingBean(OrientDocumentOperations.class)
-    public OrientDocumentTemplate documentTemplate(OrientDocumentDatabaseFactory factory) {
-        return new OrientDocumentTemplate(factory);
     }
 
     @Bean
