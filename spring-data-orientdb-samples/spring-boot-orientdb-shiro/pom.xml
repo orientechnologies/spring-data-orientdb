@@ -25,7 +25,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- dependencies -->
         <shiro.version>1.2.4</shiro.version>
-        <hazelcast.version>3.5.1</hazelcast.version>
+        <hazelcast.version>3.3.5</hazelcast.version>
     </properties>
 
     <dependencies>
