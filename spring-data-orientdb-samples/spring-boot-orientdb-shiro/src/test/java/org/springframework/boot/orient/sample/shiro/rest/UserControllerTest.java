@@ -12,6 +12,9 @@
  */
 package org.springframework.boot.orient.sample.shiro.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.orient.sample.shiro.Application;
@@ -25,11 +28,20 @@ import org.springframework.boot.orient.sample.shiro.repository.RoleRepository;
 import org.springframework.boot.orient.sample.shiro.repository.UserRepository;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.http.*;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.util.Arrays;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.AssertJUnit.assertEquals;
 
 @SpringApplicationConfiguration(classes
         = {Application.class, OrientDbConfiguration.class, ShiroConfiguration.class})
@@ -37,24 +49,20 @@ import org.testng.annotations.BeforeClass;
 @IntegrationTest
 @TestExecutionListeners(inheritListeners = false, listeners
         = {DependencyInjectionTestExecutionListener.class})
-public class UserControllerIntegrationTests extends AbstractTestNGSpringContextTests {
-
-    @Autowired
-    private DefaultPasswordService passwordService;
-
-    @Autowired
-    private UserRepository userRepo;
-
-    @Autowired
-    private RoleRepository roleRepo;
-
-    @Autowired
-    private PermissionRepository permissionRepo;
+public class UserControllerTest extends AbstractTestNGSpringContextTests {
 
     private final String BASE_URL = "http://localhost:8080/users";
     private final String USER_NAME = "Paulo Pires";
     private final String USER_EMAIL = "pjpires@gmail.com";
     private final String USER_PWD = "123qwe";
+    @Autowired
+    private DefaultPasswordService passwordService;
+    @Autowired
+    private UserRepository userRepo;
+    @Autowired
+    private RoleRepository roleRepo;
+    @Autowired
+    private PermissionRepository permissionRepo;
 
     @BeforeClass
     public void setUp() {
@@ -82,19 +90,39 @@ public class UserControllerIntegrationTests extends AbstractTestNGSpringContextT
         userRepo.save(user);
     }
 
-//  @Test
-//  public void shouldAuthenticate() throws JsonProcessingException {
-//    // authenticate
-//    HttpHeaders headers = new HttpHeaders();
-//    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//    headers.setContentType(MediaType.APPLICATION_JSON);
-//    final String json = new ObjectMapper().writeValueAsString(new UsernamePasswordToken(
-//                    USER_EMAIL, USER_PWD));
-//    System.out.println(json);
-//    final ResponseEntity<String> response = new TestRestTemplate(
-//        HtppClientOption.ENABLE_COOKIES).exchange(BASE_URL.concat("/auth"),
-//            HttpMethod.POST, new HttpEntity<>(json, headers), String.class);
-//    assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
-//  }
+    @Test
+    public void test_count() {
+        assertEquals(1, userRepo.count());
+    }
+
+    @Test
+    public void test_authenticate_success() throws JsonProcessingException {
+        // authenticate
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        final String json = new ObjectMapper().writeValueAsString(
+                new UsernamePasswordToken(USER_EMAIL, USER_PWD));
+        System.out.println(json);
+        final ResponseEntity<String> response = new TestRestTemplate(
+                TestRestTemplate.HttpClientOption.ENABLE_COOKIES).exchange(BASE_URL.concat("/auth"),
+                HttpMethod.POST, new HttpEntity<>(json, headers), String.class);
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+    }
+
+    @Test
+    public void test_authenticate_failure() throws JsonProcessingException {
+        // authenticate
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        final String json = new ObjectMapper().writeValueAsString(
+                new UsernamePasswordToken(USER_EMAIL, "wrong password"));
+        System.out.println(json);
+        final ResponseEntity<String> response = new TestRestTemplate(
+                TestRestTemplate.HttpClientOption.ENABLE_COOKIES).exchange(BASE_URL.concat("/auth"),
+                HttpMethod.POST, new HttpEntity<>(json, headers), String.class);
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.UNAUTHORIZED));
+    }
 
 }
