@@ -1,11 +1,15 @@
 package org.springframework.data.orient.object.repository.cluster;
 
-
+import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
+import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.orient.commons.repository.DefaultCluster;
 import org.springframework.data.orient.object.OrientDbObjectTestConfiguration;
 import org.springframework.data.orient.object.OrientObjectDatabaseFactory;
@@ -20,6 +24,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static org.springframework.data.orient.object.OrientDbObjectTestConfiguration.EMPLOYEE_TMP_CLUSTER;
+import org.testng.Assert;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
@@ -27,8 +32,8 @@ import static org.testng.Assert.assertNotNull;
 @TransactionConfiguration(defaultRollback = false)
 @ContextConfiguration(classes = OrientDbObjectTestConfiguration.class)
 @Transactional
-public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContextTests
-{
+public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContextTests {
+
     private static final Logger logger = LoggerFactory.getLogger(EmployeeClusteredRepositoryTest.class);
 
     @Autowired
@@ -117,13 +122,38 @@ public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContext
             logger.debug("Cluster ID: {}", i);
         }
 
-
         db.close();
     }
 
     @Test
     public void findByFirstNameByCluster() {
-        repository.findByFirstName("Dzmitry", new DefaultCluster(EMPLOYEE_TMP_CLUSTER));
+        List<Employee> results = repository.findByFirstName("Dzmitry", new DefaultCluster(EMPLOYEE_TMP_CLUSTER));
+        Assert.assertFalse(results.isEmpty());
+    }
+
+    @Test
+    public void findByFirstNamePaged() {
+        Page<Employee> results = repository.findByFirstNameOrderByFirstName("Dzmitry", new PageRequest(0, 1));
+        Assert.assertFalse(results.getContent().isEmpty());
+    }
+
+    @Test
+    public void findByIds() {
+        Page<Employee> employees = repository.findByFirstNameOrderByFirstName("Dzmitry", new PageRequest(0, 1));
+        List<String> ids = new ArrayList<>();
+        List<ORecordId> oRecordIds = new ArrayList<>();
+        for (Employee p : employees.getContent()) {
+            ids.add(p.getRid());
+            ORecordId oRecordId = new ORecordId();
+            oRecordId.fromString(p.getRid());
+            oRecordIds.add(oRecordId);
+        }
+        List<Employee> results1 = repository.queryByRidIn(oRecordIds);
+        Assert.assertFalse(results1.isEmpty());
+
+        List<Employee> results2 = repository.findAll(ids);
+        Assert.assertFalse(results2.isEmpty());
+
     }
 
     @Test

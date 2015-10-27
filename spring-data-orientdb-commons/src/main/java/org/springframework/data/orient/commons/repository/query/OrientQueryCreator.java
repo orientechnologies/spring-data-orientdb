@@ -99,7 +99,7 @@ public class OrientQueryCreator extends AbstractQueryCreator<String, Condition> 
         //TODO: Fix it!! 
         //String queryString = query.getSQL(paramType);
         //Use inline parameters for paged queries
-        String queryString = pageable == null ? query.getSQL(paramType) : query.getSQL(ParamType.INLINED);
+        String queryString = query.getSQL(ParamType.INLINED);
         logger.debug(queryString);
         
         return queryString;

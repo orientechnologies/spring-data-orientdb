@@ -184,7 +184,13 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
      */
     @Override
     public List<T> findAll(Iterable<String> ids) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<ORecordId> oRecordIds = new ArrayList<>();
+        for (String id : ids) {
+            ORecordId oRecordId = new ORecordId();
+            oRecordId.fromString(id);
+            oRecordIds.add(oRecordId);
+        }
+        return operations.query(getQuery("?", null), oRecordIds);
     }
 
     /* (non-Javadoc)
