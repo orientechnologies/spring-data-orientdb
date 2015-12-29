@@ -7,6 +7,7 @@ import org.springframework.data.orient.commons.repository.annotation.Cluster;
 import org.springframework.data.orient.commons.repository.annotation.Source;
 import org.springframework.data.orient.commons.repository.query.OrientQueryLookupStrategy;
 import org.springframework.data.repository.core.EntityInformation;
+import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.data.repository.query.QueryLookupStrategy;
@@ -16,14 +17,16 @@ import java.io.Serializable;
 
 /**
  * Orient specific generic repository factory.
- * 
+ *
  * @author Dzmitry_Naskou
  */
 public class OrientRepositoryFactory extends RepositoryFactorySupport {
 
-    /** The orient template. */
+    /**
+     * The orient template.
+     */
     protected final OrientOperations operations;
-    
+
     /**
      * Instantiates a new {@link OrientRepositoryFactory}.
      *
@@ -43,12 +46,8 @@ public class OrientRepositoryFactory extends RepositoryFactorySupport {
         return (EntityInformation<T, ID>) new OrientMetamodelEntityInformation<T>(domainClass);
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.data.repository.core.support.RepositoryFactorySupport#getTargetRepository(org.springframework.data.repository.core.RepositoryMetadata)
-     */
     @Override
-    @SuppressWarnings({ "rawtypes", "unchecked"})
-    protected Object getTargetRepository(RepositoryMetadata metadata) {
+    protected Object getTargetRepository(RepositoryInformation metadata) {
         EntityInformation<?, Serializable> entityInformation = getEntityInformation(metadata.getDomainType());
         Class<?> repositoryInterface = metadata.getRepositoryInterface();
         Class<?> javaType = entityInformation.getJavaType();
@@ -60,6 +59,7 @@ public class OrientRepositoryFactory extends RepositoryFactorySupport {
             return new SimpleOrientRepository(operations, javaType, repositoryInterface);
         }
     }
+
 
     /* (non-Javadoc)
      * @see org.springframework.data.repository.core.support.RepositoryFactorySupport#getRepositoryBaseClass(org.springframework.data.repository.core.RepositoryMetadata)
@@ -80,25 +80,25 @@ public class OrientRepositoryFactory extends RepositoryFactorySupport {
     /**
      * Get Custom Cluster Name.
      * Method looks for {@link Source} and {@link Cluster} annotation.
-     *
+     * <p>
      * If {@link Source} is not null and {@link org.springframework.data.orient.commons.repository.annotation.Source#type()} equals to
      * {@link org.springframework.data.orient.commons.repository.SourceType#CLUSTER} then returns {@link org.springframework.data.orient.commons.repository.annotation.Source#value()}
-     *
+     * <p>
      * If {@link Cluster} is not null then returns {@link org.springframework.data.orient.commons.repository.annotation.Cluster#value()}
      *
      * @param metadata
      * @return cluster name or null if it's not defined
      */
-    protected String getCustomCluster(RepositoryMetadata metadata){
+    protected String getCustomCluster(RepositoryMetadata metadata) {
         Class<?> repositoryInterface = metadata.getRepositoryInterface();
 
         Source source = AnnotationUtils.getAnnotation(repositoryInterface, Source.class);
-        if(source != null && SourceType.CLUSTER.equals(source.type())){
+        if (source != null && SourceType.CLUSTER.equals(source.type())) {
             return source.value();
         }
 
         Cluster cluster = AnnotationUtils.getAnnotation(repositoryInterface, Cluster.class);
-        if (cluster != null){
+        if (cluster != null) {
             return cluster.value();
         }
         return null;

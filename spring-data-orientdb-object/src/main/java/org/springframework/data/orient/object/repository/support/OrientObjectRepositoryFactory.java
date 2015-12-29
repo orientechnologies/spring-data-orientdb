@@ -10,6 +10,7 @@ import org.springframework.data.orient.commons.repository.support.SimpleOrientRe
 import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.repository.OrientObjectRepository;
 import org.springframework.data.repository.core.EntityInformation;
+import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.data.repository.query.QueryLookupStrategy;
@@ -34,7 +35,7 @@ public class OrientObjectRepositoryFactory extends RepositoryFactorySupport {
 
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked"})
-    protected Object getTargetRepository(RepositoryMetadata metadata) {
+    protected Object getTargetRepository(RepositoryInformation metadata) {
         EntityInformation<?, Serializable> entityInformation = getEntityInformation(metadata.getDomainType());
         Class<?> repositoryInterface = metadata.getRepositoryInterface();
         Class<?> javaType = entityInformation.getJavaType();

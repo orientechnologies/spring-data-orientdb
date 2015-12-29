@@ -42,7 +42,7 @@
         <module>spring-data-orientdb-benchmarks</module>
         <module>spring-data-orientdb-samples/spring-boot-orientdb-hello</module>
         <module>spring-data-orientdb-samples/spring-boot-orientdb-shiro</module>
-  </modules>
+    </modules>
 
     <properties>
         <!-- maven -->
@@ -58,16 +58,17 @@
         <osgi.import>*</osgi.import>
         <osgi.dynamicImport/>
         <osgi.private/>
-        <sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</sonatypeOssDistMgmtSnapshotsUrl>
+        <sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/
+        </sonatypeOssDistMgmtSnapshotsUrl>
         <!-- dependency versions -->
-        <slf4j.version>1.7.10</slf4j.version>
-        <logback.version>1.1.2</logback.version>
-        <orientdb.version>2.1.4</orientdb.version>
-        <aspectj.version>1.8.4</aspectj.version>
-        <spring.version>4.2.0.RELEASE</spring.version>
-        <spring.data.version>1.10.2.RELEASE</spring.data.version>
-        <spring.boot.version>1.2.5.RELEASE</spring.boot.version>
-        <jooq.version>3.6.2</jooq.version>
+        <slf4j.version>1.7.13</slf4j.version>
+        <logback.version>1.1.3</logback.version>
+        <orientdb.version>2.1.8</orientdb.version>
+        <aspectj.version>1.8.7</aspectj.version>
+        <spring.version>4.2.4.RELEASE</spring.version>
+        <spring.data.version>1.11.2.RELEASE</spring.data.version>
+        <spring.boot.version>1.3.1.RELEASE</spring.boot.version>
+        <jooq.version>3.7.2</jooq.version>
         <jmh.version>1.4.1</jmh.version>
         <junit.version>4.12</junit.version>
         <testng.version>6.8.21</testng.version>
@@ -555,23 +556,30 @@
                                 <finalName>${shaded.name}</finalName>
                                 <minimizeJar>false</minimizeJar>
                                 <transformers>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <transformer
+                                            implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                    <transformer
+                                            implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                         <resource>META-INF/spring.handlers</resource>
                                     </transformer>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <transformer
+                                            implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                         <resource>META-INF/spring.schemas</resource>
                                     </transformer>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <transformer
+                                            implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                         <resource>META-INF/spring.factories</resource>
                                     </transformer>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <transformer
+                                            implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                         <resource>META-INF/cxf/org.apache.cxf.bus.factory</resource>
                                     </transformer>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <transformer
+                                            implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                         <resource>META-INF/cxf/bus-extensions.txt</resource>
                                     </transformer>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <transformer
+                                            implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                         <manifestEntries>
                                             <Main-Class>${shaded.main}</Main-Class>
                                             <X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
