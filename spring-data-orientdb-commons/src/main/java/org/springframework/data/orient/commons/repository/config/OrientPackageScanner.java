@@ -4,8 +4,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.data.orient.commons.repository.annotation.OEntity;
 
+import javax.persistence.Entity;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +47,7 @@ public class OrientPackageScanner {
     private static ClassPathScanningCandidateComponentProvider scanner() {
         ClassPathScanningCandidateComponentProvider scanner =
                 new ClassPathScanningCandidateComponentProvider(false);
-        scanner.addIncludeFilter( new AnnotationTypeFilter(OEntity.class) );
+        scanner.addIncludeFilter( new AnnotationTypeFilter(Entity.class) );
         return scanner;
     }
 
