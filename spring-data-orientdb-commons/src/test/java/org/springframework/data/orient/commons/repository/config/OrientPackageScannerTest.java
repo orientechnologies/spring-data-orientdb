@@ -1,14 +1,12 @@
 package org.springframework.data.orient.commons.repository.config;
 
-import org.springframework.data.orient.commons.repository.config.scanner.test.EntitiesMarker;
-import org.springframework.data.orient.commons.repository.config.scanner.test.NoEntity;
-import org.springframework.data.orient.commons.repository.config.scanner.test.SimpleEntity;
+import org.springframework.data.orient.commons.repository.config.scanner.test.*;
 import org.testng.annotations.Test;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author saljuama
@@ -19,14 +17,20 @@ public class OrientPackageScannerTest {
     private final String testBasePackage = "org.springframework.data.orient.commons.repository.config.scanner.test";
     private final Class testBasePackageClass = EntitiesMarker.class;
 
+    private static Set<Class<?>> expectedResult() {
+        Set<Class<?>> expected = new HashSet<>();
+        expected.add(SimpleVertexEntity.class);
+        expected.add(SimpleEdgeEntity.class);
+        return expected;
+    }
+
+
     @Test
     public void testScanBasePackagesForClasses_withString() throws Exception {
 
         Set<? extends Class<?>> result = OrientPackageScanner.scanBasePackagesForClasses(testBasePackage);
 
-        assertTrue( result.size() == 1 );
-        assertTrue( result.contains( SimpleEntity.class ));
-        assertFalse( result.contains( NoEntity.class ));
+        assertEquals(result, expectedResult());
     }
 
     @Test
@@ -35,8 +39,6 @@ public class OrientPackageScannerTest {
 
         Set<? extends Class<?>> result = OrientPackageScanner.scanBasePackagesForClasses(testBasePackageClass);
 
-        assertTrue( result.size() == 1 );
-        assertTrue( result.contains( SimpleEntity.class ));
-        assertFalse( result.contains( NoEntity.class ));
+        assertEquals(result, expectedResult());
     }
 }
