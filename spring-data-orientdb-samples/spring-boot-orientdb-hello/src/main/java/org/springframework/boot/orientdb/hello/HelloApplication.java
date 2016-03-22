@@ -19,8 +19,8 @@ import java.util.List;
 @Configuration
 @EnableAutoConfiguration
 @EnableTransactionManagement
-@ComponentScan("org.hello")
-@EnableOrientRepositories("org.hello.repository")
+@ComponentScan("org.springframework.boot.orientdb.hello")
+@EnableOrientRepositories("org.springframework.boot.orientdb.hello.repository")
 public class HelloApplication implements CommandLineRunner {
 
     @Autowired
