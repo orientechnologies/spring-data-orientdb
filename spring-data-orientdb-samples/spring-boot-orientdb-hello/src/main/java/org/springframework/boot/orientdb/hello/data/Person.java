@@ -1,17 +1,25 @@
 package org.springframework.boot.orientdb.hello.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.orientechnologies.orient.core.annotation.OId;
-import com.orientechnologies.orient.core.annotation.OVersion;
+import javax.persistence.Id;
+import javax.persistence.Version;
 
-@JsonIgnoreProperties("handler")
+@JsonIgnoreProperties(value = {"handler"})
 public class Person {
 
-    @OId
+    @Id
     private String id;
     
-    @OVersion
+    @Version
+    @JsonIgnore
     private Long version;
+    
+    /**
+     * Added to avoid a runtime error whereby the detachAll property is checked
+     * for existence but not actually used.
+     */
+    private String detachAll;
     
     private String firstName;
     
