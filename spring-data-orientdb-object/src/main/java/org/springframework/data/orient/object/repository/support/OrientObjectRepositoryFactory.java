@@ -30,7 +30,7 @@ public class OrientObjectRepositoryFactory extends RepositoryFactorySupport {
     @Override
     @SuppressWarnings("unchecked")
     public <T, ID extends Serializable> EntityInformation<T, ID> getEntityInformation(Class<T> domainClass) {
-        return (EntityInformation<T, ID>) new OrientMetamodelEntityInformation<T>(domainClass);
+        return (EntityInformation<T, ID>) new OrientMetamodelEntityInformation<>(domainClass);
     }
 
     @Override

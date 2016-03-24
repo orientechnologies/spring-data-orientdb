@@ -52,7 +52,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
      * @param repositoryInterface the target repository interface
      */
     public SimpleOrientRepository(OrientOperations operations, Class<T> domainClass, Class<?> repositoryInterface) {
-        this(operations, domainClass, repositoryInterface, new SimpleOrientStrategy<T>(operations, domainClass));
+        this(operations, domainClass, repositoryInterface, new SimpleOrientStrategy<>(operations, domainClass));
     }
 
     /**
@@ -109,7 +109,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
             return Collections.emptyList();
         }
 
-        List<S> result = new ArrayList<S>();
+        List<S> result = new ArrayList<>();
 
         for (S entity : entities) {
             result.add(save(entity));
@@ -124,7 +124,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
             return Collections.emptyList();
         }
 
-        List<S> result = new ArrayList<S>();
+        List<S> result = new ArrayList<>();
 
         for (S entity : entities) {
             result.add(save(entity, cluster));
@@ -312,13 +312,13 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
     @SuppressWarnings("unchecked")
     public Page<T> findAll(Pageable pageable) {
         if (pageable == null) {
-            return new PageImpl<T>(findAll());
+            return new PageImpl<>(findAll());
         }
 
         Long total = count();
         List<T> content = (List<T>) (total > pageable.getOffset() ? operations.query(getQuery(pageable)) : Collections.<T> emptyList());
 
-        return new PageImpl<T>(content, pageable, total);
+        return new PageImpl<>(content, pageable, total);
     }
 
     /**
@@ -341,7 +341,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
     private OSQLQuery<T> getQuery(String source, Sort sort) {
         Query query = DSL.using(SQLDialect.MYSQL).select().from(source).orderBy(QueryUtils.toOrders(sort));
 
-        return new OSQLSynchQuery<T>(query.getSQL(ParamType.INLINED));
+        return new OSQLSynchQuery<>(query.getSQL(ParamType.INLINED));
     }
 
     /**
@@ -358,6 +358,6 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
         SelectLimitStep<? extends Record> limitStep = sort == null ? joinStep : joinStep.orderBy(QueryUtils.toOrders(sort));
         Query query = pageable == null ? limitStep : limitStep.limit(pageable.getPageSize()).offset(pageable.getOffset());
         
-        return new OSQLSynchQuery<T>(query.getSQL(ParamType.INLINED));
+        return new OSQLSynchQuery<>(query.getSQL(ParamType.INLINED));
     }
 }
