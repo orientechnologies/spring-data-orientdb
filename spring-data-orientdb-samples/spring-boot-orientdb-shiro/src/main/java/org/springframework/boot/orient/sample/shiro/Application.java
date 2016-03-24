@@ -18,7 +18,11 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableAutoConfiguration
 @ComponentScan
-public class Application {
+public final class Application {
+
+    private Application() throws InstantiationException {
+        throw new InstantiationException("This class is not for instantiation");
+    }
 
     public static void main(String... args) {
         new SpringApplicationBuilder()

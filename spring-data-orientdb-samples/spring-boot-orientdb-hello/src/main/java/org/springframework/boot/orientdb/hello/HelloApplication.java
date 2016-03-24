@@ -48,7 +48,7 @@ public class HelloApplication implements CommandLineRunner {
         
         //Create Persons if required
         if (repository.count() < 1) {
-            List<Person> persons = new ArrayList<Person>();
+            List<Person> persons = new ArrayList<>();
             
             Person graham = new Person();
             graham.setFirstName("Graham");

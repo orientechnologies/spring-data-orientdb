@@ -169,7 +169,7 @@ public class OrientQueryCreator extends AbstractQueryCreator<String, Condition> 
             return Collections.emptyList();
         }
         
-        List<Object> list = new ArrayList<Object>();
+        List<Object> list = new ArrayList<>();
         while (iterator.hasNext()) {
             list.add(iterator.next());
         }
@@ -178,7 +178,7 @@ public class OrientQueryCreator extends AbstractQueryCreator<String, Condition> 
     }
     
     private List<SortField<?>> toOrders(Sort sort) {
-        List<SortField<?>> orders = new ArrayList<SortField<?>>();
+        List<SortField<?>> orders = new ArrayList<>();
         
         for (Order order : sort) {
             orders.add(field(order.getProperty()).sort(order.getDirection() == Direction.ASC ? SortOrder.ASC : SortOrder.DESC)); 

@@ -53,7 +53,7 @@ public final class QueryUtils {
             return Collections.emptyList();
         }
         
-        List<SortField<?>> orders = new ArrayList<SortField<?>>();
+        List<SortField<?>> orders = new ArrayList<>();
         
         for (Order order : sort) {
             orders.add(field(order.getProperty()).sort(order.getDirection() == Direction.ASC ? SortOrder.ASC : SortOrder.DESC)); 
