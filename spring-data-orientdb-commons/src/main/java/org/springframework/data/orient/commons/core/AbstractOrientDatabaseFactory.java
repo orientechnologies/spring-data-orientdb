@@ -83,11 +83,9 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
     }
 
     protected void createDatabase(ODatabase<?> db) {
-        if (autoCreate) {
-            if (!db.exists()) {
-                db.create();
-                db.close();
-            }
+        if (autoCreate && !db.exists()) {
+            db.create();
+            db.close();
         }
     }
 

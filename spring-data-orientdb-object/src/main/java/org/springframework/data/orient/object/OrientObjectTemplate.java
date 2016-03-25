@@ -49,7 +49,7 @@ public class OrientObjectTemplate extends AbstractOrientOperations<Object> imple
         return null;
     }
 
-    private String getterName(String propertyName) {
+    private static String getterName(String propertyName) {
         return "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1).toLowerCase();
     }
 

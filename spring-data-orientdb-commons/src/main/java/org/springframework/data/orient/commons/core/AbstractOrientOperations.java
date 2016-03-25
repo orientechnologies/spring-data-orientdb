@@ -567,6 +567,8 @@ public abstract class AbstractOrientOperations<T> implements OrientOperations<T>
             case ALL:
                 return detachAll(result);
             case NONE:
+                default:
+                    break;
         }
 
         return result;
@@ -583,6 +585,8 @@ public abstract class AbstractOrientOperations<T> implements OrientOperations<T>
             case ALL:
                 return detachAll(result);
             case NONE:
+                default:
+                    break;
         }
 
         return result;
