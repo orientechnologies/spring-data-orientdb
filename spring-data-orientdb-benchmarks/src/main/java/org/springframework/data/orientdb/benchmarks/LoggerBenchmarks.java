@@ -18,6 +18,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @State(Scope.Thread)
 public class LoggerBenchmarks {
+    private static final String TARGET = "target";
+
     @Param({"sync", "async", "durable"})
     public String loggerName;
     private Logger logger;
@@ -31,9 +33,9 @@ public class LoggerBenchmarks {
 
     @TearDown
     public void cleanup() throws IOException {
-        Files.deleteIfExists(Paths.get("target", "jmh.log"));
-        Files.deleteIfExists(Paths.get("target", "durable.data"));
-        Files.deleteIfExists(Paths.get("target", "durable.index"));
+        Files.deleteIfExists(Paths.get(TARGET, "jmh.log"));
+        Files.deleteIfExists(Paths.get(TARGET, "durable.data"));
+        Files.deleteIfExists(Paths.get(TARGET, "durable.index"));
     }
 
     @Benchmark

@@ -159,12 +159,13 @@ public class OrientQueryCreator extends AbstractQueryCreator<String, Condition> 
         switch (part.shouldIgnoreCase()) {
             case ALWAYS:
             case WHEN_POSSIBLE: return field.likeIgnoreCase(iterator.next().toString());
+            default: break;
         }
         
         return field.like(iterator.next().toString());
     }
     
-    private List<Object> toList(Iterator<Object> iterator) {
+    private static List<Object> toList(Iterator<Object> iterator) {
         if (iterator == null || !iterator.hasNext()) {
             return Collections.emptyList();
         }

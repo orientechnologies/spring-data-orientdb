@@ -34,8 +34,8 @@ public class HazelcastSessionDao extends AbstractSessionDAO {
     private static final Logger log = LoggerFactory
             .getLogger(HazelcastSessionDao.class);
 
-    private String hcInstanceName = UUID.randomUUID().toString();
-    private IMap<Serializable, Session> map;
+    private final String hcInstanceName = UUID.randomUUID().toString();
+    private final IMap<Serializable, Session> map;
     private static final String HC_MAP = "sessions";
     private static final String HC_GROUP_NAME = "hc";
     private static final String HC_GROUP_PASSWORD = "oursessionssecret";
