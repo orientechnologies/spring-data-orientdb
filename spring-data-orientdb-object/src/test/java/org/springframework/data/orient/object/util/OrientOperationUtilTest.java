@@ -8,9 +8,9 @@ import org.springframework.data.orient.object.OrientObjectDatabaseFactory;
 import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.domain.Address;
 import org.springframework.data.orient.object.domain.Employee;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 
 @Configuration
 @EnableTransactionManagement
-@TransactionConfiguration
+@Rollback
 @ContextConfiguration(classes = OrientDbObjectTestConfiguration.class)
 public class OrientOperationUtilTest extends AbstractTestNGSpringContextTests {
 

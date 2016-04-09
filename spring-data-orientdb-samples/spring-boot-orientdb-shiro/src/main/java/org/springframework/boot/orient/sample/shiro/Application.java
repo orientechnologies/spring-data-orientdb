@@ -12,6 +12,7 @@
  */
 package org.springframework.boot.orient.sample.shiro;
 
+import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,7 +28,7 @@ public final class Application {
     public static void main(String... args) {
         new SpringApplicationBuilder()
                 .sources(Application.class)
-                .showBanner(false)
+                .bannerMode(Banner.Mode.OFF)
                 .run(args);
     }
 

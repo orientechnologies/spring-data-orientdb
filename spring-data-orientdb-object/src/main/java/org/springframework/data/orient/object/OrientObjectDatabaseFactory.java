@@ -1,6 +1,6 @@
 package org.springframework.data.orient.object;
 
-import com.orientechnologies.orient.object.db.OObjectDatabasePool;
+import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactory;
 
@@ -12,20 +12,19 @@ import org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactor
  */
 public class OrientObjectDatabaseFactory extends AbstractOrientDatabaseFactory<Object> {
 
-    private OObjectDatabasePool pool;
+    private OPartitionedDatabasePool pool;
 
     /** The database. */
     private OObjectDatabaseTx db;
 
     @Override
     protected void createPool() {
-        pool = new OObjectDatabasePool(getUrl(), getUsername(), getPassword());
-        pool.setup(minPoolSize, maxPoolSize);
+        pool = new OPartitionedDatabasePool(getUrl(), getUsername(), getPassword(), maxPoolSize);
     }
 
     @Override
     public OObjectDatabaseTx openDatabase() {
-        db = pool.acquire();
+        db = new OObjectDatabaseTx(pool.acquire());
         return db;
     }
 
