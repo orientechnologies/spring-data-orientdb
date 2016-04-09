@@ -10,11 +10,11 @@ import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.domain.Address;
 import org.springframework.data.orient.object.domain.Person;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -24,7 +24,7 @@ import java.util.List;
 import static org.testng.Assert.*;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@TransactionConfiguration(defaultRollback = true)
+@Rollback
 @TestExecutionListeners(
         inheritListeners = false,
         listeners = {DependencyInjectionTestExecutionListener.class})

@@ -27,9 +27,6 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
     /** The password. */
     protected String password = DEFAULT_PASSWORD;
 
-    /** The min pool size. */
-    protected int minPoolSize = DEFAULT_MIN_POOL_SIZE;
-
     /** The max pool size. */
     protected int maxPoolSize = DEFAULT_MAX_POOL_SIZE;
 
@@ -141,24 +138,6 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
      */
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    /**
-     * Gets the min pool size.
-     *
-     * @return the min pool size
-     */
-    public int getMinPoolSize() {
-        return minPoolSize;
-    }
-
-    /**
-     * Sets the min pool size.
-     *
-     * @param minPoolSize the new min pool size
-     */
-    public void setMinPoolSize(int minPoolSize) {
-        this.minPoolSize = minPoolSize;
     }
 
     /**

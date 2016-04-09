@@ -31,10 +31,6 @@ public interface OrientDatabaseFactory<T> {
 
     void setPassword(String password);
 
-    int getMinPoolSize();
-
-    void setMinPoolSize(int minPoolSize);
-
     int getMaxPoolSize();
 
     void setMaxPoolSize(int maxPoolSize);
