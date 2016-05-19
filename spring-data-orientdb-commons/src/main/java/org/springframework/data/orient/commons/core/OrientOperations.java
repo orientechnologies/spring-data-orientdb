@@ -13,7 +13,6 @@ import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.intent.OIntent;
 import com.orientechnologies.orient.core.metadata.OMetadata;
 import com.orientechnologies.orient.core.metadata.security.OSecurityUser;
-import com.orientechnologies.orient.core.metadata.security.OUser;
 import com.orientechnologies.orient.core.query.OQuery;
 import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.orientechnologies.orient.core.sql.query.OSQLQuery;
@@ -21,54 +20,56 @@ import com.orientechnologies.orient.core.storage.ORecordCallback;
 import com.orientechnologies.orient.core.storage.ORecordMetadata;
 import com.orientechnologies.orient.core.storage.OStorage;
 import com.orientechnologies.orient.core.tx.OTransaction;
-import com.orientechnologies.orient.core.version.ORecordVersion;
 import org.springframework.data.orient.commons.repository.DetachMode;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public interface OrientOperations<T> {
 
-    String getName();
+  String getName();
 
-    String getURL();
+  String getURL();
 
-    ODatabase<T> database();
+  ODatabase<T> database();
 
-    Object setProperty(String name, Object value);
+  Object setProperty(String name, Object value);
 
-    Object getProperty(String name);
+  Object getProperty(String name);
 
-    Iterator<Map.Entry<String, Object>> getProperties();
+  Iterator<Map.Entry<String, Object>> getProperties();
 
-    Object get(ODatabase.ATTRIBUTES attribute);
+  Object get(ODatabase.ATTRIBUTES attribute);
 
-    <DB extends ODatabase<T>> DB set(ODatabase.ATTRIBUTES attribute, Object value);
+  <DB extends ODatabase<T>> DB set(ODatabase.ATTRIBUTES attribute, Object value);
 
-    public void registerListener(ODatabaseListener listener);
+  public void registerListener(ODatabaseListener listener);
 
-    public void unregisterListener(ODatabaseListener listener);
+  public void unregisterListener(ODatabaseListener listener);
 
-    Map<ORecordHook, ORecordHook.HOOK_POSITION> getHooks();
+  Map<ORecordHook, ORecordHook.HOOK_POSITION> getHooks();
 
-    <DB extends ODatabase<T>> DB registerHook(ORecordHook hook);
+  <DB extends ODatabase<T>> DB registerHook(ORecordHook hook);
 
-    <DB extends ODatabase<T>> DB registerHook(ORecordHook hook, ORecordHook.HOOK_POSITION position);
+  <DB extends ODatabase<T>> DB registerHook(ORecordHook hook, ORecordHook.HOOK_POSITION position);
 
-    <DB extends ODatabase<T>> DB unregisterHook(ORecordHook hook);
+  <DB extends ODatabase<T>> DB unregisterHook(ORecordHook hook);
 
-    ORecordHook.RESULT callbackHooks(ORecordHook.TYPE type, OIdentifiable id);
+  void backup(OutputStream out, Map<String, Object> options, Callable<Object> callable, OCommandOutputListener listener,
+      int compressionLevel, int bufferSize) throws IOException;
 
-    void backup(OutputStream out, Map<String, Object> options, Callable<Object> callable, OCommandOutputListener listener, int compressionLevel, int bufferSize) throws IOException;
+  void restore(InputStream in, Map<String, Object> options, Callable<Object> callable, OCommandOutputListener listener)
+      throws IOException;
 
-    void restore(InputStream in, Map<String, Object> options, Callable<Object> callable, OCommandOutputListener listener) throws IOException;
+  String getType();
 
-    String getType();
-
-    long getSize();
+  long getSize();
 
     void freeze(boolean throwException);
 
@@ -78,181 +79,175 @@ public interface OrientOperations<T> {
 
     OMetadata getMetadata();
 
-    ORecordMetadata getRecordMetadata(ORID rid);
+  ORecordMetadata getRecordMetadata(ORID rid);
 
-    ODictionary<T> getDictionary();
+  ODictionary<T> getDictionary();
 
-    boolean declareIntent(OIntent intent);
+  boolean declareIntent(OIntent intent);
 
+  public boolean isMVCC();
 
-    public boolean isMVCC();
+  public <DB extends ODatabase<T>> DB setMVCC(boolean mvcc);
 
-    public <DB extends ODatabase<T>> DB setMVCC(boolean mvcc);
+  boolean isClosed();
 
-    boolean isClosed();
+  void reload();
 
-    void reload();
+  T reload(T entity, String fetchPlan, boolean ignoreCache);
 
-    T reload(T entity, String fetchPlan, boolean ignoreCache);
+  ODatabase.STATUS getStatus();
 
-    ODatabase.STATUS getStatus();
+  <DB extends ODatabase<T>> DB setStatus(ODatabase.STATUS status);
 
-    <DB extends ODatabase<T>> DB setStatus(ODatabase.STATUS status);
+  OTransaction getTransaction();
 
-    OTransaction getTransaction();
+  ODatabase<T> begin();
 
-    ODatabase<T> begin();
+  ODatabase<?> begin(OTransaction.TXTYPE type);
 
-    ODatabase<?> begin(OTransaction.TXTYPE type);
+  ODatabase<T> begin(OTransaction tx);
 
-    ODatabase<T> begin(OTransaction tx);
+  ODatabase<T> commit();
 
-    ODatabase<T> commit();
+  ODatabase<T> commit(boolean force) throws OTransactionException;
 
-    ODatabase<T> commit(boolean force) throws OTransactionException;
+  ODatabase<T> rollback();
 
-    ODatabase<T> rollback();
+  ODatabase<T> rollback(boolean force) throws OTransactionException;
 
-    ODatabase<T> rollback(boolean force) throws OTransactionException;
+  OLocalRecordCache getLevel2Cache();
 
-    OLocalRecordCache getLevel2Cache();
+  T newInstance();
 
-    T newInstance();
-    
-    T load(ORID recordId);
-    
-    T load(String recordId);
+  T load(ORID recordId);
 
-    T load(T entity);
+  T load(String recordId);
 
-    T load(T entity, String fetchPlan);
+  T load(T entity);
 
-    T load(T entity, String fetchPlan, boolean ignoreCache);
+  T load(T entity, String fetchPlan);
 
-    T load(ORID recordId, String fetchPlan);
+  T load(T entity, String fetchPlan, boolean ignoreCache);
 
-    T load(ORID recordId, String fetchPlan, boolean ignoreCache);
+  T load(ORID recordId, String fetchPlan);
 
-    T load(T entity, String fetchPlan, boolean ignoreCache, boolean loadTombstone, OStorage.LOCKING_STRATEGY lockingStrategy);
+  T load(ORID recordId, String fetchPlan, boolean ignoreCache);
 
-    T load(ORID recordId, String fetchPlan, boolean ignoreCache, boolean loadTombstone, OStorage.LOCKING_STRATEGY lockingStrategy);
+  T load(T entity, String fetchPlan, boolean ignoreCache, boolean loadTombstone, OStorage.LOCKING_STRATEGY lockingStrategy);
 
-    <S extends T> S save(S entity);
-    
-    <S extends T> S save(S entity, String cluster);
+  T load(ORID recordId, String fetchPlan, boolean ignoreCache, boolean loadTombstone, OStorage.LOCKING_STRATEGY lockingStrategy);
 
-    <S extends T> S save(S entity, ODatabase.OPERATION_MODE mode, boolean forceCreate, ORecordCallback<? extends Number> recordCallback, ORecordCallback<ORecordVersion> recordUpdatedCallback);
+  <S extends T> S save(S entity);
 
-    long countClass(String className);
+  <S extends T> S save(S entity, String cluster);
 
-    long countClass(Class<?> clazz);
+  <S extends T> S save(S entity, ODatabase.OPERATION_MODE mode, boolean forceCreate,
+      ORecordCallback<? extends Number> recordCallback, ORecordCallback<Integer> recordUpdatedCallback);
 
-    long count(OSQLQuery<?> query, Object... args);
+  long countClass(String className);
 
-    long countClusterElements(String clusterName);
+  long countClass(Class<?> clazz);
 
-    long countClusterElements(int clusterId);
+  long count(OSQLQuery<?> query, Object... args);
 
-    long countClusterElements(int[] clusterIds);
+  long countClusterElements(String clusterName);
 
-    long countClusterElements(int iClusterId, boolean countTombstones);
+  long countClusterElements(int clusterId);
 
-    long countClusterElements(int[] iClusterIds, boolean countTombstones);
+  long countClusterElements(int[] clusterIds);
 
-    int getClusters();
+  long countClusterElements(int iClusterId, boolean countTombstones);
 
-    boolean existsCluster(String iClusterName);
+  long countClusterElements(int[] iClusterIds, boolean countTombstones);
 
-    Collection<String> getClusterNames();
+  int getClusters();
 
-    ODatabase<T> delete(ORID recordId);
+  boolean existsCluster(String iClusterName);
 
-    ODatabase<T> delete(T entity);
+  Collection<String> getClusterNames();
 
-    ODatabase<T> delete(ORID rid, ORecordVersion version);
+  ODatabase<T> delete(ORID recordId);
 
-    int getDefaultClusterId();
+  ODatabase<T> delete(T entity);
 
-    int getDefaultClusterId(Class<?> domainClass);
+  ODatabase<T> delete(ORID rid, int version);
 
-    String getClusterNameById(int clusterId);
+  int getDefaultClusterId();
 
-    int getClusterIdByName(String clusterName);
+  int getDefaultClusterId(Class<?> domainClass);
 
-    int getClusterIdByName(String clusterName, Class<?> clazz);
+  String getClusterNameById(int clusterId);
 
-    String getClusterNameByRid(String rid);
+  int getClusterIdByName(String clusterName);
 
-    List<String> getClusterNamesByClass(Class<?> clazz, boolean includeDefault);
+  int getClusterIdByName(String clusterName, Class<?> clazz);
 
-    long getClusterRecordSizeById(int clusterId);
+  String getClusterNameByRid(String rid);
 
-    long getClusterRecordSizeByName(String clusterName);
+  List<String> getClusterNamesByClass(Class<?> clazz, boolean includeDefault);
 
-    int addCluster(String type, String clusterName, String location, String dataSegmentName, Object... params);
+  long getClusterRecordSizeById(int clusterId);
 
-    int addCluster(String type, String clusterName, int requestedId, String location, String dataSegmentName, Object... params);
+  long getClusterRecordSizeByName(String clusterName);
 
-    int addCluster(String clusterName, Object... params);
+  int addCluster(String type, String clusterName, String location, String dataSegmentName, Object... params);
 
-    int addCluster(String clusterName);
+  int addCluster(String type, String clusterName, int requestedId, String location, String dataSegmentName, Object... params);
 
-    public void freezeCluster(int iClusterId, boolean throwException);
+  int addCluster(String clusterName, Object... params);
 
-    public void freezeCluster(int iClusterId);
+  int addCluster(String clusterName);
 
-    public void releaseCluster(int iClusterId);
+  boolean isDefault(String clusterName);
 
-    boolean isDefault(String clusterName);
+  /**
+   * Is Class registered in OrientDb
+   *
+   * @param clazz
+   *          class to check
+   * @return Is Class registered in OrientDb
+   */
+  boolean existsClass(Class<?> clazz);
 
-    /**
-     * Is Class registered in OrientDb
-     *
-     * @param clazz class to check
-     * @return Is Class registered in OrientDb
-     */
-    boolean existsClass(Class<?> clazz);
+  /**
+   * Is Class registered in OrientDb
+   *
+   * @param className
+   *          simple class name (clazz.getSimpleName())
+   * @return Is Class registered in OrientDb
+   */
+  boolean existsClass(String className);
 
-    /**
-     * Is Class registered in OrientDb
-     *
-     * @param className simple class name (clazz.getSimpleName())
-     * @return Is Class registered in OrientDb
-     */
-    boolean existsClass(String className);
+  /**
+   * Find field annotated with {@link com.orientechnologies.orient.core.annotation.OId} in entity and return it's value.
+   *
+   * @param entity
+   *          Orient Entity
+   * @return orient row ID or null if it is to found
+   */
+  String getRid(T entity);
 
-    /**
-     * Find field annotated with {@link com.orientechnologies.orient.core.annotation.OId}
-     * in entity and return it's value.
-     *
-     * @param entity Orient Entity
-     * @return orient row ID or null if it is to found
-     */
-    String getRid(T entity);
+  OSecurityUser getUser();
 
-    OSecurityUser getUser();
+  <RET extends List<?>> RET detach(RET entities);
 
-    void setUser(OUser user);
+  <RET extends List<?>> RET detachAll(RET list);
 
-    <RET extends List<?>> RET detach(RET entities);
+  <RET> RET detach(RET entity);
 
-    <RET extends List<?>> RET detachAll(RET list);
+  <RET> RET detachAll(RET entity);
 
-    <RET> RET detach(RET entity);
+  <RET extends List<?>> RET query(OQuery<?> query, Object... args);
 
-    <RET> RET detachAll(RET entity);
+  <RET extends List<?>> RET query(OQuery<?> query, DetachMode detachMode, Object... args);
 
-    <RET extends List<?>> RET query(OQuery<?> query, Object... args);
+  <RET> RET queryForObject(OSQLQuery<?> query, Object... args);
 
-    <RET extends List<?>> RET query(OQuery<?> query, DetachMode detachMode, Object... args);
+  <RET> RET queryForObject(OSQLQuery<?> query, DetachMode detachMode, Object... args);
 
-    <RET> RET queryForObject(OSQLQuery<?> query, Object... args);
+  <RET extends OCommandRequest> RET command(OCommandRequest command);
 
-    <RET> RET queryForObject(OSQLQuery<?> query, DetachMode detachMode, Object... args);
+  <RET> RET command(OCommandSQL command, Object... args);
 
-    <RET extends OCommandRequest> RET command(OCommandRequest command);
-
-    <RET> RET command(OCommandSQL command, Object... args);
-    
-    <RET> RET command(String sql, Object... args);
+  <RET> RET command(String sql, Object... args);
 }
