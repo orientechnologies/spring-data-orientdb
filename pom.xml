@@ -97,17 +97,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-<!--
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net repository</name>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-        <repository>
-            <id>spring-libs-snapshot</id>
-            <url>http://repo.spring.io/libs-snapshot</url>
-        </repository>
--->
     </repositories>
     <properties>
         <!-- maven -->

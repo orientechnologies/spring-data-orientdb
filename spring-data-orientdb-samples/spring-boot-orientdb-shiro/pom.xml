@@ -32,9 +32,9 @@
 
         <!--  spring boot -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
+            <groupId>com.orientechnologies</groupId>
             <artifactId>spring-boot-orientdb-autoconfigure</artifactId>
-            <version>${project.version}</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -80,12 +80,12 @@
         <dependency>
             <groupId>com.orientechnologies</groupId>
             <artifactId>spring-data-orientdb-commons</artifactId>
-            <version>0.12-SNAPSHOT</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.orientechnologies</groupId>
             <artifactId>spring-data-orientdb-object</artifactId>
-            <version>0.12-SNAPSHOT</version>
+            <version>${parent.version}</version>
         </dependency>
 
     </dependencies>
