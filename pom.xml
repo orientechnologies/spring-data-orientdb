@@ -18,20 +18,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.springframework.data</groupId>
+    <groupId>com.orientechnologies</groupId>
     <artifactId>spring-data-orientdb-parent</artifactId>
-    <version>0.10.0-SNAPSHOT</version>
+    <version>0.11</version>
     <packaging>pom</packaging>
 
     <name>Spring Data OrientDB</name>
     <description>Spring Data OrientDB</description>
-    <url>http://www.orientechnologies.com</url>
+    <url>http://orientdb.com</url>
+    <inceptionYear>2015</inceptionYear>
+    <organization>
+        <name>OrientDB</name>
+        <url>http://orientdb.com</url>
+    </organization>
     <licenses>
         <license>
             <name>Apache 2</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+
+    <mailingLists>
+        <mailingList>
+            <name>google groups</name>
+            <archive>http://groups.google.com/group/orient-database/topics</archive>
+        </mailingList>
+    </mailingLists>
 
     <modules>
         <module>spring-data-orientdb-commons</module>
@@ -44,6 +56,59 @@
         <module>spring-data-orientdb-samples/spring-boot-orientdb-shiro</module>
     </modules>
 
+    <scm>
+        <connection>scm:git:git@github.com:orientechnologies/spring-data-orientdb.git</connection>
+        <developerConnection>scm:git:git@github.com:orientechnologies/spring-data-orientdb.git</developerConnection>
+        <url>scm:git:git@github.com:orientechnologies/spring-data-orientdb.git</url>
+    </scm>
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/orientechnologies/spring-data-orientdb/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://helios.orientdb.com/</url>
+    </ciManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>OrientDB Maven2 Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>OrientDB Maven2 Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+<!--
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net repository</name>
+            <url>http://download.java.net/maven/2</url>
+        </repository>
+        <repository>
+            <id>spring-libs-snapshot</id>
+            <url>http://repo.spring.io/libs-snapshot</url>
+        </repository>
+-->
+    </repositories>
     <properties>
         <!-- maven -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -73,15 +138,17 @@
         <junit.version>4.12</junit.version>
         <testng.version>6.8.21</testng.version>
         <rest.assured.version>2.4.0</rest.assured.version>
+        <sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/
+        </sonatypeOssDistMgmtSnapshotsUrl>
     </properties>
 
     <developers>
         <developer>
             <id>l.garulli</id>
             <name>Luca Garulli</name>
-            <email>l.garulli@orientechnologies.com</email>
-            <organization>Orientechnologies</organization>
-            <organizationUrl>http://www.orientechnologies.com</organizationUrl>
+            <email>l.garulli@orientdb.com</email>
+            <organization>OrientDB</organization>
+            <organizationUrl>http://orientdb.com</organizationUrl>
             <roles>
                 <role>architect</role>
                 <role>developer</role>
@@ -126,32 +193,6 @@
             <timezone>+0</timezone>
         </developer>
     </developers>
-
-    <scm>
-        <connection>scm:git:git@github.com:orientechnologies/spring-data-orientdb.git</connection>
-        <developerConnection>scm:git:git@github.com:orientechnologies/spring-data-orientdb.git</developerConnection>
-        <url>scm:git:git@github.com:orientechnologies/spring-data-orientdb.git</url>
-    </scm>
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/orientechnologies/spring-data-orientdb/issues</url>
-    </issueManagement>
-    <ciManagement>
-        <system>jenkins</system>
-        <url>http://datastorm.com.ua/</url>
-    </ciManagement>
-    <distributionManagement>
-        <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>OrientDB Maven2 Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-        <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>OrientDB Maven2 Snapshot Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
@@ -352,12 +393,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <id>spring-libs-snapshot</id>
-            <url>http://repo.spring.io/libs-snapshot</url>
-        </repository>
-    </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>spring-plugins-release</id>
@@ -699,4 +734,34 @@
             </testResource>
         </testResources>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
