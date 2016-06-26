@@ -42,7 +42,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/users")
 public class UserController {
 
-    private static final Logger log = LoggerFactory.
+    private static final Logger LOGGER = LoggerFactory.
             getLogger(UserController.class);
 
     @Autowired
@@ -59,7 +59,7 @@ public class UserController {
 
     @RequestMapping(value = "/auth", method = POST)
     public void authenticate(@RequestBody final UsernamePasswordToken credentials) {
-        log.info("Authenticating {} with password {}", credentials.getUsername(),
+        LOGGER.info("Authenticating {} with password {}", credentials.getUsername(),
                 credentials.getPassword());
         final Subject subject = SecurityUtils.getSubject();
         subject.login(credentials);
@@ -83,7 +83,7 @@ public class UserController {
 
     @RequestMapping(method = PUT)
     public void initScenario() {
-        log.info("Initializing scenario..");
+        LOGGER.info("Initializing scenario..");
         // clean-up users, roles and permissions
         userRepo.deleteAll();
         roleRepo.deleteAll();
@@ -109,7 +109,7 @@ public class UserController {
         user.setPassword(passwordService.encryptPassword("123qwe"));
         user.getRoles().add(roleAdmin);
         userRepo.save(user);
-        log.info("Scenario initiated.");
+        LOGGER.info("Scenario initiated.");
     }
 
 }
