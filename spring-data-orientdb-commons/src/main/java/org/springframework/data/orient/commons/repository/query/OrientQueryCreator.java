@@ -28,7 +28,7 @@ import static org.jooq.impl.DSL.field;
 
 public class OrientQueryCreator extends AbstractQueryCreator<String, Condition> {
     
-    private static final Logger logger = LoggerFactory.getLogger(OrientQueryCreator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrientQueryCreator.class);
     
     private final DSLContext context;
     
@@ -100,7 +100,7 @@ public class OrientQueryCreator extends AbstractQueryCreator<String, Condition> 
         //String queryString = query.getSQL(paramType);
         //Use inline parameters for paged queries
         String queryString = query.getSQL(ParamType.INLINED);
-        logger.debug(queryString);
+        LOGGER.debug(queryString);
         
         return queryString;
     }

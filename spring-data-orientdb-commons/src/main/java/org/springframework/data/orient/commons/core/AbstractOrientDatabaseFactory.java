@@ -19,7 +19,7 @@ import static org.springframework.util.Assert.notNull;
 public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabaseFactory<T> {
 
     /** The logger. */
-    private static Logger log = LoggerFactory.getLogger(AbstractOrientDatabaseFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractOrientDatabaseFactory.class);
 
     /** The username. */
     protected String username = DEFAULT_USERNAME;
@@ -67,15 +67,15 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
         ODatabase<T> db;
         if(!ODatabaseRecordThreadLocal.INSTANCE.isDefined()) {
             db = openDatabase();
-            log.debug("acquire db from pool {}", db.hashCode());
+            LOGGER.debug("acquire db from pool {}", db.hashCode());
         } else {
             db = (ODatabase<T>)ODatabaseRecordThreadLocal.INSTANCE.get().getDatabaseOwner();
 
             if(db.isClosed()) {
                 db = openDatabase();
-                log.debug("re-opened db {}", db.hashCode());
+                LOGGER.debug("re-opened db {}", db.hashCode());
             } else {
-                log.debug("use existing db {}", db.hashCode());
+                LOGGER.debug("use existing db {}", db.hashCode());
             }
         }
 

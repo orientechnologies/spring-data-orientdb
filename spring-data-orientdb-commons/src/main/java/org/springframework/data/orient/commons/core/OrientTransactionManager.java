@@ -24,7 +24,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     private static final long serialVersionUID = 1L;
 
     /** The logger. */
-    private static Logger log = LoggerFactory.getLogger(OrientTransactionManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrientTransactionManager.class);
 
     /** The database factory. */
     private OrientDatabaseFactory<?> dbf;
@@ -80,7 +80,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
             TransactionSynchronizationManager.bindResource(dbf, db);
         }
         
-        log.debug("beginning transaction, db.hashCode() = {}", db.hashCode());
+        LOGGER.debug("beginning transaction, db.hashCode() = {}", db.hashCode());
         
         db.begin();
     }
@@ -93,7 +93,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
         OrientTransaction tx = (OrientTransaction) status.getTransaction();
         ODatabase<?> db = tx.getDatabase();
         
-        log.debug("committing transaction, db.hashCode() = {}", db.hashCode());
+        LOGGER.debug("committing transaction, db.hashCode() = {}", db.hashCode());
         
         db.commit();
     }
@@ -106,7 +106,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
         OrientTransaction tx = (OrientTransaction) status.getTransaction();
         ODatabase<?> db = tx.getDatabase();
         
-        log.debug("rolling back transaction, db.hashCode() = {}", db.hashCode());
+        LOGGER.debug("rolling back transaction, db.hashCode() = {}", db.hashCode());
         
         db.rollback();
     }
@@ -127,7 +127,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
         OrientTransaction tx = (OrientTransaction) transaction;
         
         if (!tx.getDatabase().isClosed()) {
-            log.debug("closing transaction, db.hashCode() = {}", tx.getDatabase().hashCode());
+            LOGGER.debug("closing transaction, db.hashCode() = {}", tx.getDatabase().hashCode());
             tx.getDatabase().close();
         }
         

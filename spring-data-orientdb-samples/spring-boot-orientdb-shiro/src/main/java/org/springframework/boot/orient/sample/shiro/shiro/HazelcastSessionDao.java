@@ -31,7 +31,7 @@ import java.util.UUID;
  */
 public class HazelcastSessionDao extends AbstractSessionDAO {
 
-    private static final Logger log = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(HazelcastSessionDao.class);
 
     private final String hcInstanceName = UUID.randomUUID().toString();
@@ -44,7 +44,7 @@ public class HazelcastSessionDao extends AbstractSessionDAO {
     private static final int HC_MULTICAST_PORT = 54327;
 
     public HazelcastSessionDao() {
-        log.info("Initializing Hazelcast Shiro session persistence..");
+        LOGGER.info("Initializing Hazelcast Shiro session persistence..");
 
         // configure Hazelcast instance
         final Config cfg = new Config();
@@ -74,13 +74,13 @@ public class HazelcastSessionDao extends AbstractSessionDAO {
 
         // get map
         map = Hazelcast.newHazelcastInstance(cfg).getMap(HC_MAP);
-        log.info("Hazelcast Shiro session persistence initialized.");
+        LOGGER.info("Hazelcast Shiro session persistence initialized.");
     }
 
     @Override
     protected Serializable doCreate(Session session) {
         final Serializable sessionId = generateSessionId(session);
-        log.debug("Creating a new session identified by[{}]", sessionId);
+        LOGGER.debug("Creating a new session identified by[{}]", sessionId);
         assignSessionId(session, sessionId);
         map.put(session.getId(), session);
 
@@ -89,19 +89,19 @@ public class HazelcastSessionDao extends AbstractSessionDAO {
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
-        log.debug("Reading a session identified by[{}]", sessionId);
+        LOGGER.debug("Reading a session identified by[{}]", sessionId);
         return map.get(sessionId);
     }
 
     @Override
     public void update(Session session) throws UnknownSessionException {
-        log.debug("Updating a session identified by[{}]", session.getId());
+        LOGGER.debug("Updating a session identified by[{}]", session.getId());
         map.replace(session.getId(), session);
     }
 
     @Override
     public void delete(Session session) {
-        log.debug("Deleting a session identified by[{}]", session.getId());
+        LOGGER.debug("Deleting a session identified by[{}]", session.getId());
         map.remove(session.getId());
     }
 
@@ -119,7 +119,7 @@ public class HazelcastSessionDao extends AbstractSessionDAO {
      */
     public Collection<Session> getSessionsForAuthenticationEntity(
             final String email) {
-        log.debug("Looking up for sessions related to [{}]", email);
+        LOGGER.debug("Looking up for sessions related to [{}]", email);
         final SessionAttributePredicate<String> predicate
                 = new SessionAttributePredicate<>("email", email);
         return map.values(predicate);
@@ -129,7 +129,7 @@ public class HazelcastSessionDao extends AbstractSessionDAO {
      * Destroys currently allocated instance.
      */
     public void destroy() {
-        log.info("Shutting down Hazelcast instance [{}]..", hcInstanceName);
+        LOGGER.info("Shutting down Hazelcast instance [{}]..", hcInstanceName);
         final HazelcastInstance instance = Hazelcast.getHazelcastInstanceByName(
                 hcInstanceName);
         if (instance != null) {
