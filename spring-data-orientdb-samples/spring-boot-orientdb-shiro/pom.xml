@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.orientechnologies</groupId>
             <artifactId>spring-boot-orientdb-autoconfigure</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
