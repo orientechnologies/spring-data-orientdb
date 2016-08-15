@@ -7,13 +7,12 @@ import org.springframework.data.orient.commons.core.OrientDatabaseFactory;
 public class OrientProperties {
 
     private String url;
-    
+
     private String username;
-    
+
     private String password;
-    
-    private int minPoolSize = OrientDatabaseFactory.DEFAULT_MIN_POOL_SIZE;
-    
+
+
     private int maxPoolSize = OrientDatabaseFactory.DEFAULT_MAX_POOL_SIZE;
 
     public String getUrl() {
@@ -40,13 +39,6 @@ public class OrientProperties {
         this.password = password;
     }
 
-    public int getMinPoolSize() {
-        return minPoolSize;
-    }
-
-    public void setMinPoolSize(int minPoolSize) {
-        this.minPoolSize = minPoolSize;
-    }
 
     public int getMaxPoolSize() {
         return maxPoolSize;

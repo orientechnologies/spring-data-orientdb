@@ -13,6 +13,7 @@ import org.springframework.data.repository.core.EntityInformation;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
+import org.springframework.data.repository.query.EvaluationContextProvider;
 import org.springframework.data.repository.query.QueryLookupStrategy;
 
 import java.io.Serializable;
@@ -34,7 +35,7 @@ public class OrientObjectRepositoryFactory extends RepositoryFactorySupport {
     }
 
     @Override
-    @SuppressWarnings({ "rawtypes", "unchecked"})
+    @SuppressWarnings({"rawtypes", "unchecked"})
     protected Object getTargetRepository(RepositoryInformation metadata) {
         EntityInformation<?, Serializable> entityInformation = getEntityInformation(metadata.getDomainType());
         Class<?> repositoryInterface = metadata.getRepositoryInterface();
@@ -57,7 +58,7 @@ public class OrientObjectRepositoryFactory extends RepositoryFactorySupport {
     }
 
     @Override
-    protected QueryLookupStrategy getQueryLookupStrategy(QueryLookupStrategy.Key key) {
+    protected QueryLookupStrategy getQueryLookupStrategy(QueryLookupStrategy.Key key, EvaluationContextProvider evaluationContextProvider) {
         return OrientQueryLookupStrategy.create(operations, key);
     }
 
@@ -70,32 +71,32 @@ public class OrientObjectRepositoryFactory extends RepositoryFactorySupport {
         }
     }
 
-    private boolean isObjectRepository(Class<?>  repositoryInterface) {
+    private boolean isObjectRepository(Class<?> repositoryInterface) {
         return OrientObjectRepository.class.isAssignableFrom(repositoryInterface);
     }
 
     /**
      * Get Custom Cluster Name.
      * Method looks for {@link org.springframework.data.orient.commons.repository.annotation.Source} and {@link org.springframework.data.orient.commons.repository.annotation.Cluster} annotation.
-     *
+     * <p>
      * If {@link org.springframework.data.orient.commons.repository.annotation.Source} is not null and {@link org.springframework.data.orient.commons.repository.annotation.Source#type()} equals to
      * {@link org.springframework.data.orient.commons.repository.SourceType#CLUSTER} then returns {@link org.springframework.data.orient.commons.repository.annotation.Source#value()}
-     *
+     * <p>
      * If {@link org.springframework.data.orient.commons.repository.annotation.Cluster} is not null then returns {@link org.springframework.data.orient.commons.repository.annotation.Cluster#value()}
      *
      * @param metadata
      * @return cluster name or null if it's not defined
      */
-    private String getCustomCluster(RepositoryMetadata metadata){
+    private String getCustomCluster(RepositoryMetadata metadata) {
         Class<?> repositoryInterface = metadata.getRepositoryInterface();
 
         Source source = AnnotationUtils.getAnnotation(repositoryInterface, Source.class);
-        if(source != null && SourceType.CLUSTER.equals(source.type())){
+        if (source != null && SourceType.CLUSTER.equals(source.type())) {
             return source.value();
         }
 
         Cluster cluster = AnnotationUtils.getAnnotation(repositoryInterface, Cluster.class);
-        if (cluster != null){
+        if (cluster != null) {
             return cluster.value();
         }
         return null;

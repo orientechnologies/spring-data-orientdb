@@ -8,9 +8,9 @@ import org.springframework.data.orient.object.OrientObjectDatabaseFactory;
 import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.domain.Address;
 import org.springframework.data.orient.object.domain.Employee;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 
 @Configuration
 @EnableTransactionManagement
-@TransactionConfiguration
+@Rollback
 @ContextConfiguration(classes = OrientDbObjectTestConfiguration.class)
 public class OrientOperationUtilTest extends AbstractTestNGSpringContextTests {
 
@@ -27,7 +27,7 @@ public class OrientOperationUtilTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
     OrientObjectDatabaseFactory factory;
-    
+
     @BeforeClass
     public void before() {
         try (OObjectDatabaseTx db = factory.openDatabase()) {
@@ -36,7 +36,7 @@ public class OrientOperationUtilTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getRidTest(){
+    public void getRidTest() {
         Address address = new Address();
         Assert.assertNull(template.getRid(address));
 
@@ -45,7 +45,7 @@ public class OrientOperationUtilTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getRidFromParentTest(){
+    public void getRidFromParentTest() {
         Employee employee = new Employee();
         Assert.assertNull(template.getRid(employee));
 
@@ -54,10 +54,10 @@ public class OrientOperationUtilTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getRidFromProxy(){
+    public void getRidFromProxy() {
         Employee employee = new Employee();
         Employee savedEmployee = template.save(employee);
-        
+
         Assert.assertNotSame(savedEmployee.getClass(), Employee.class);
         Assert.assertEquals(template.getRid(savedEmployee), savedEmployee.getRid());
     }
