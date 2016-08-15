@@ -80,12 +80,12 @@
         <dependency>
             <groupId>com.orientechnologies</groupId>
             <artifactId>spring-data-orientdb-commons</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.orientechnologies</groupId>
             <artifactId>spring-data-orientdb-object</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>
