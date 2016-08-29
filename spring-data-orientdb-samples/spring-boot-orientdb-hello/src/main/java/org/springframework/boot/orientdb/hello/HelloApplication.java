@@ -87,5 +87,8 @@ public class HelloApplication implements CommandLineRunner {
             
             repository.save(persons);
         }
+        
+        //test deleteBy operation by removing Kaitlin
+        Long numDeleted = repository.deleteByAge(22);
     }
 }

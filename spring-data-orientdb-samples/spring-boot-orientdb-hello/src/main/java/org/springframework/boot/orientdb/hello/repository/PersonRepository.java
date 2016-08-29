@@ -14,4 +14,7 @@ public interface PersonRepository extends OrientObjectRepository<Person> {
     List<Person> findByLastName(String lastName);
     
     List<Person> findByAge(Integer age);
+    
+    @Query("delete from Person where age = ?")
+    Long deleteByAge(Integer age);
 }

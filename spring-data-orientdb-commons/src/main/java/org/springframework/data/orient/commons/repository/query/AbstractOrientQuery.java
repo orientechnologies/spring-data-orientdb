@@ -5,6 +5,7 @@ import org.springframework.data.orient.commons.core.OrientOperations;
 import org.springframework.data.orient.commons.repository.DetachMode;
 import org.springframework.data.orient.commons.repository.query.OrientQueryExecution.CollectionExecution;
 import org.springframework.data.orient.commons.repository.query.OrientQueryExecution.CountExecution;
+import org.springframework.data.orient.commons.repository.query.OrientQueryExecution.DeleteExecution;
 import org.springframework.data.orient.commons.repository.query.OrientQueryExecution.PagedExecution;
 import org.springframework.data.orient.commons.repository.query.OrientQueryExecution.SingleEntityExecution;
 import org.springframework.data.repository.query.RepositoryQuery;
@@ -114,7 +115,11 @@ public abstract class AbstractOrientQuery implements RepositoryQuery {
             return new PagedExecution(operations, parameters);
         } else if (method.isQueryForEntity()) {
             return new SingleEntityExecution(operations, parameters);
-        } 
+        } else if (method.getName().startsWith("deleteBy")) {
+            //using deleteBy prefix in method name since method object does not 
+            //have a flag to indicate if method is for delete operation
+            return new DeleteExecution(method.getAnnotatedQuery(), operations, parameters);
+        }
         
         throw new IllegalArgumentException();
     }
