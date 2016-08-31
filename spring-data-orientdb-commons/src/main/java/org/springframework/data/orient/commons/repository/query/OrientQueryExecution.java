@@ -74,6 +74,36 @@ public abstract class OrientQueryExecution {
             return operations.query(query.createQuery(values), mode, prepareParameters(parameters, values));
         }
     }
+    
+    /**
+     * Executes a delete operation using provided @query method annotation.
+     * 
+     * @author Ronnie Andrews, Jr.
+     */
+    static class DeleteExecution extends OrientQueryExecution {
+        
+        private String sql;
+
+        /**
+         * Instantiates a new {@link DeleteExecution}.
+         *
+         * @param template the template
+         */
+        public DeleteExecution(String sql, OrientOperations template, OrientParameters parameters) {
+            
+            super(template, parameters);
+            this.sql = sql;
+        }
+
+        /* (non-Javadoc)
+         * @see org.springframework.data.orient.repository.object.query.OrientQueryExecution#doExecute(org.springframework.data.orient.repository.object.query.AbstractOrientQuery, java.lang.Object[])
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        protected Object doExecute(AbstractOrientQuery query, DetachMode mode, Object[] values) {
+            return operations.command(this.sql, values);
+        }
+    }
 
     /**
      * Executes a {@link AbstractOrientQuery} to return a single entity.

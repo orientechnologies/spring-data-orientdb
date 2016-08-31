@@ -14,7 +14,11 @@ public class StringBasedOrientQuery extends AbstractOrientQuery {
     public StringBasedOrientQuery(String query, OrientQueryMethod method, OrientOperations operations) {
         super(method, operations);
         this.queryString = query;
-        this.isCountQuery = method.hasAnnotatedQuery() ? method.getQueryAnnotation().count() : false;
+        
+        //if method starts with countBy, it is Spring Data countBy method, 
+        //otherwise do regular check
+        this.isCountQuery = (method.getMethod().getName().startsWith("countBy")) ? 
+            true : ((method.hasAnnotatedQuery()) ? method.getQueryAnnotation().count() : false);
     }
 
     @Override
