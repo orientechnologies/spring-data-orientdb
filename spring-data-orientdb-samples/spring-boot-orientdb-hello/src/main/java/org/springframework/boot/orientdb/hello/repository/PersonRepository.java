@@ -7,11 +7,14 @@ import org.springframework.data.orient.object.repository.OrientObjectRepository;
 import java.util.List;
 
 public interface PersonRepository extends OrientObjectRepository<Person> {
-    
+
     List<Person> findByFirstName(String firstName);
-    
+
     @Query("select from person where lastName = ?")
     List<Person> findByLastName(String lastName);
-    
+
     List<Person> findByAge(Integer age);
+
+    //    @Query("delete  from person where age= ?")
+    Long deleteByAge(Integer age);
 }

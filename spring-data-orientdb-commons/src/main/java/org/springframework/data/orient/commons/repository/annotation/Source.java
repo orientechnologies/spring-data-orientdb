@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation to declare orient source (class or cluster).
- * 
+ *
  * @author Dzmitry_Naskou
  */
 @Documented
@@ -20,7 +20,7 @@ public @interface Source {
      * @return the source type
      */
     SourceType type() default SourceType.CLUSTER;
-    
+
     /**
      * Defines the Orient cluster name.
      */

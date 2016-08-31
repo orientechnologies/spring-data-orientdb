@@ -16,17 +16,21 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 /**
  * {@link org.springframework.transaction.PlatformTransactionManager} implementation
  * for OrientDB.
- * 
+ *
  * @author Dzmitry_Naskou
  */
 public class OrientTransactionManager extends AbstractPlatformTransactionManager implements ResourceTransactionManager {
 
     private static final long serialVersionUID = 1L;
 
-    /** The logger. */
+    /**
+     * The logger.
+     */
     private static Logger log = LoggerFactory.getLogger(OrientTransactionManager.class);
 
-    /** The database factory. */
+    /**
+     * The database factory.
+     */
     private OrientDatabaseFactory<?> dbf;
 
     /**
@@ -47,7 +51,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
         OrientTransaction tx = new OrientTransaction();
 
         ODatabase<?> db = (ODatabase<?>) TransactionSynchronizationManager.getResource(getResourceFactory());
-        
+
         if (db != null) {
             tx.setDatabase(db);
             tx.setTx(db.getTransaction());
@@ -55,14 +59,14 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 
         return tx;
     }
-    
+
     /* (non-Javadoc)
      * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#isExistingTransaction(java.lang.Object)
      */
     @Override
     protected boolean isExistingTransaction(Object transaction) throws TransactionException {
         OrientTransaction tx = (OrientTransaction) transaction;
-        
+
         return tx.getTx() != null && tx.getTx().isActive();
     }
 
@@ -79,9 +83,9 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
             tx.setDatabase(db);
             TransactionSynchronizationManager.bindResource(dbf, db);
         }
-        
+
         log.debug("beginning transaction, db.hashCode() = {}", db.hashCode());
-        
+
         db.begin();
     }
 
@@ -92,9 +96,9 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     protected void doCommit(DefaultTransactionStatus status) throws TransactionException {
         OrientTransaction tx = (OrientTransaction) status.getTransaction();
         ODatabase<?> db = tx.getDatabase();
-        
+
         log.debug("committing transaction, db.hashCode() = {}", db.hashCode());
-        
+
         db.commit();
     }
 
@@ -105,12 +109,12 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     protected void doRollback(DefaultTransactionStatus status) throws TransactionException {
         OrientTransaction tx = (OrientTransaction) status.getTransaction();
         ODatabase<?> db = tx.getDatabase();
-        
+
         log.debug("rolling back transaction, db.hashCode() = {}", db.hashCode());
-        
+
         db.rollback();
     }
-    
+
     /* (non-Javadoc)
      * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#doSetRollbackOnly(org.springframework.transaction.support.DefaultTransactionStatus)
      */
@@ -125,15 +129,15 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     @Override
     protected void doCleanupAfterCompletion(Object transaction) {
         OrientTransaction tx = (OrientTransaction) transaction;
-        
+
         if (!tx.getDatabase().isClosed()) {
             log.debug("closing transaction, db.hashCode() = {}", tx.getDatabase().hashCode());
             tx.getDatabase().close();
         }
-        
+
         TransactionSynchronizationManager.unbindResource(dbf);
     }
-    
+
     /* (non-Javadoc)
      * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#doSuspend(java.lang.Object)
      */
@@ -143,7 +147,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 
         return tx.getDatabase();
     }
-    
+
     /* (non-Javadoc)
      * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#doResume(java.lang.Object, java.lang.Object)
      */
@@ -151,7 +155,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
     protected void doResume(Object transaction, Object suspendedResources) throws TransactionException {
         OrientTransaction tx = (OrientTransaction) transaction;
         ODatabase<?> db = tx.getDatabase();
-        
+
         if (!db.isClosed()) {
             db.close();
         }

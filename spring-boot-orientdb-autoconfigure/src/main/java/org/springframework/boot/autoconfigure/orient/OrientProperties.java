@@ -12,7 +12,6 @@ public class OrientProperties {
 
     private String password;
 
-
     private int maxPoolSize = OrientDatabaseFactory.DEFAULT_MAX_POOL_SIZE;
 
     public String getUrl() {
@@ -38,7 +37,6 @@ public class OrientProperties {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public int getMaxPoolSize() {
         return maxPoolSize;

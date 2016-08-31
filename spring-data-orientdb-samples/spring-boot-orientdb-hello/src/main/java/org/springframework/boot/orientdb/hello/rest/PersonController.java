@@ -16,24 +16,29 @@ public class PersonController {
 
     @Autowired
     private PersonRepository repository;
-    
+
     @RequestMapping(method = RequestMethod.GET)
     public List<Person> findAllPersons() {
         return repository.findAll();
     }
-    
+
     @RequestMapping("/findByFirstName")
     public List<Person> findByFirstName(@RequestParam String firstName) {
         return repository.findByFirstName(firstName);
     }
-    
+
     @RequestMapping("/findByLastName")
     public List<Person> findByLastName(@RequestParam String lastName) {
         return repository.findByLastName(lastName);
     }
-    
+
     @RequestMapping("/findByAge")
     public List<Person> findByAge(@RequestParam Integer age) {
         return repository.findByAge(age);
+    }
+
+    @RequestMapping("/deleteByAge")
+    public Long deleteByAge(@RequestParam Integer age) {
+        return repository.deleteByAge(age);
     }
 }

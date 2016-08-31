@@ -10,17 +10,20 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Set of classes to contain query execution strategies. 
- * 
+ * Set of classes to contain query execution strategies.
+ *
  * @author Dzmitry_Naskou
- * 
  */
 public abstract class OrientQueryExecution {
 
-    /** The orient object template. */
+    /**
+     * The orient object template.
+     */
     protected final OrientOperations operations;
-    
-    /** The parameters. */
+
+    /**
+     * The parameters.
+     */
     protected final OrientParameters parameters;
 
     public OrientQueryExecution(OrientOperations template, OrientParameters parameters) {
@@ -28,30 +31,45 @@ public abstract class OrientQueryExecution {
         this.operations = template;
         this.parameters = parameters;
     }
-    
+
     /**
      * Executes the given {@link AbstractOrientQuery} with the given {@link Object[]} values.
      *
-     * @param query the orient query
+     * @param query  the orient query
      * @param values the parameters values
      * @return the result
      */
     public Object execute(AbstractOrientQuery query, DetachMode mode, Object[] values) {
         return doExecute(query, mode, values);
     }
-    
+
     /**
      * Method to implement by executions.
      *
-     * @param query the orient query
+     * @param query  the orient query
      * @param values the parameters values
      * @return the result
      */
     protected abstract Object doExecute(AbstractOrientQuery query, DetachMode mode, Object[] values);
-    
+
+    protected Object[] prepareParameters(OrientParameters parameters, Object[] values) {
+        int index = 0;
+        List<Object> params = new ArrayList<>();
+
+        for (OrientParameter parameter : parameters) {
+            if (parameter.isBindable()) {
+                params.add(values[index]);
+            }
+
+            ++index;
+        }
+
+        return params.toArray();
+    }
+
     /**
      * Executes the query to return a simple collection of entities.
-     * 
+     *
      * @author Dzmitry_Naskou
      */
     static class CollectionExecution extends OrientQueryExecution {
@@ -136,7 +154,7 @@ public abstract class OrientQueryExecution {
         /**
          * Instantiates a new {@link PagedExecution}.
          *
-         * @param template the orient object template
+         * @param template   the orient object template
          * @param parameters the parameters
          */
         public PagedExecution(OrientOperations template, OrientParameters parameters) {
@@ -150,37 +168,34 @@ public abstract class OrientQueryExecution {
         @SuppressWarnings("unchecked")
         protected Object doExecute(AbstractOrientQuery query, DetachMode mode, Object[] values) {
             OrientParameterAccessor accessor = new OrientParametersParameterAccessor(parameters, values);
-            
+
             final Object[] queryParams = prepareParameters(parameters, values);
-            
+
             Long total = operations.count(query.createCountQuery(values), queryParams);
-            
+
             Pageable pageable = accessor.getPageable();
-            
+
             List<Object> content;
-            
+
             if (pageable != null && total > pageable.getOffset()) {
                 content = operations.query(query.createQuery(values), mode, queryParams);
             } else {
                 content = Collections.emptyList();
             }
-            
+
             return new PageImpl<>(content, pageable, total);
         }
     }
-    
-    protected Object[] prepareParameters(OrientParameters parameters, Object[] values) {
-        int index = 0;
-        List<Object> params = new ArrayList<>();
-        
-        for (OrientParameter parameter : parameters) {
-            if (parameter.isBindable()) {
-                params.add(values[index]);
-            }
-            
-            ++index;
+
+    static class DeleteExecution extends OrientQueryExecution {
+
+        public DeleteExecution(OrientOperations template, OrientParameters parameters) {
+            super(template, parameters);
         }
-        
-        return params.toArray();
+
+        @Override
+        protected Object doExecute(AbstractOrientQuery query, DetachMode mode, Object[] values) {
+            return operations.command(query.createCommand(values), prepareParameters(parameters, values));
+        }
     }
 }

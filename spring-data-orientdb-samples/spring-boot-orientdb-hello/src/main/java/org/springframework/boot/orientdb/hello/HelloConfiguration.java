@@ -19,7 +19,8 @@ public class HelloConfiguration {
     public OrientObjectDatabaseFactory factory() {
         OrientObjectDatabaseFactory factory =  new OrientObjectDatabaseFactory();
 
-        factory.setUrl("remote:127.0.0.1/GratefulDeadConcerts");
+//        factory.setUrl("remote:127.0.0.1/GratefulDeadConcerts");
+        factory.setUrl("memory:helloDb");
         factory.setUsername("admin");
         factory.setPassword("admin");
 

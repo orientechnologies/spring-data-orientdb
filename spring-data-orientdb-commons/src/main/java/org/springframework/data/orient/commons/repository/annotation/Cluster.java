@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation to declare orient cluster.
- * 
+ *
  * @author Dzmitry_Naskou
  */
 @Documented
