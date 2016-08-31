@@ -88,6 +88,12 @@ public class HelloApplication implements CommandLineRunner {
             repository.save(persons);
         }
         
+        //test countBy operation using generated query
+        Long countByAge = repository.countByAge(22);
+        
+        //test countBy operation using the annotated query provided
+        Long countByAgeWithAnnotatedQuery = repository.countByAgeWithAnnotatedQuery(22);
+        
         //test deleteBy operation by removing Kaitlin
         Long numDeleted = repository.deleteByAge(22);
     }
