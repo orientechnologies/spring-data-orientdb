@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.orient.sample.shiro.Application;
 import org.springframework.boot.orient.sample.shiro.OrientDbConfiguration;
@@ -31,23 +34,22 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 @SpringApplicationConfiguration(classes = {Application.class, OrientDbConfiguration.class, ShiroConfiguration.class})
 @WebAppConfiguration
 @IntegrationTest
 @TestExecutionListeners(inheritListeners = false, listeners = {DependencyInjectionTestExecutionListener.class})
-public class UserControllerTest extends AbstractTestNGSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+public class UserControllerTest {
 
     private final String BASE_URL = "http://localhost:8080/users";
     private final String USER_NAME = "Paulo Pires";
@@ -62,7 +64,7 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private PermissionRepository permissionRepo;
 
-    @BeforeClass
+    @Before
     public void setUp() {
         // clean-up users, roles and permissions
         userRepo.deleteAll();

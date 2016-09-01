@@ -38,4 +38,6 @@ public interface OrientDatabaseFactory<T> {
     int getMaxPoolSize();
 
     void setMaxPoolSize(int maxPoolSize);
+
+    void dropDatabase();
 }

@@ -88,6 +88,14 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
         return db;
     }
 
+
+    @Override
+    public void dropDatabase() {
+        ODatabaseInternal<?> database = newDatabase();
+        database.open(username, password);
+        database.drop();
+    }
+
     protected void createDatabase(ODatabase<?> db) {
         if (autoCreate) {
             if (!db.exists()) {

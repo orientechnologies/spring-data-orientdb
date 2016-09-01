@@ -1,26 +1,22 @@
 package org.springframework.data.orient.object.util;
 
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.orient.object.OrientDbObjectTestConfiguration;
 import org.springframework.data.orient.object.OrientObjectDatabaseFactory;
 import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.domain.Address;
 import org.springframework.data.orient.object.domain.Employee;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@Configuration
-@EnableTransactionManagement
-@Rollback
 @ContextConfiguration(classes = OrientDbObjectTestConfiguration.class)
-public class OrientOperationUtilTest extends AbstractTestNGSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+public class OrientOperationUtilTest {
 
     @Autowired
     OrientObjectOperations template;
@@ -28,7 +24,7 @@ public class OrientOperationUtilTest extends AbstractTestNGSpringContextTests {
     @Autowired
     OrientObjectDatabaseFactory factory;
 
-    @BeforeClass
+    @Before
     public void before() {
         try (OObjectDatabaseTx db = factory.openDatabase()) {
             db.getEntityManager().registerEntityClass(Employee.class);

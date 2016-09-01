@@ -23,6 +23,7 @@ import com.orientechnologies.orient.core.storage.ORecordCallback;
 import com.orientechnologies.orient.core.storage.ORecordMetadata;
 import com.orientechnologies.orient.core.storage.OStorage;
 import com.orientechnologies.orient.core.tx.OTransaction;
+import org.jooq.SQL;
 import org.springframework.data.orient.commons.repository.DetachMode;
 
 import java.io.IOException;
@@ -581,6 +582,7 @@ public abstract class AbstractOrientOperations<T> implements OrientOperations<T>
 
     @Override
     public <RET> RET command(OCommandSQL command, Object... args) {
+
         return dbf.db().command(command).execute(args);
     }
 

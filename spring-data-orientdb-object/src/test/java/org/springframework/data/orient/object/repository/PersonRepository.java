@@ -14,9 +14,9 @@ public interface PersonRepository extends OrientObjectRepository<Person> {
 
     @Query("select from person where firstName = ?")
     List<Person> findByFirstName(String firstName);
-    
+
     Page<Person> findByFirstName(String firstName, Pageable pageable);
-    
+
     List<Person> findByLastName(String lastName);
 
     List<Person> findByLastNameLike(String lastName);
@@ -26,7 +26,7 @@ public interface PersonRepository extends OrientObjectRepository<Person> {
     List<Person> findByFirstNameOrLastName(String firstName, String lastName);
 
     List<Person> findByFirstNameLike(String string);
-    
+
     List<Person> findByFirstNameStartsWith(String firstName);
 
     Long countByFirstName(String firstName);
@@ -40,4 +40,10 @@ public interface PersonRepository extends OrientObjectRepository<Person> {
     List<Person> findByActiveIsTrue();
 
     List<Person> findByActiveIsFalse();
+
+    Long deleteByActiveIsTrue();
+
+    Long deleteByActiveIsFalse();
+
+    Long deleteByActive(Boolean active);
 }
