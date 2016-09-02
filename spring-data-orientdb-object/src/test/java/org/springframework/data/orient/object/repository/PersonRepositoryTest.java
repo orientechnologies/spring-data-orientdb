@@ -11,7 +11,6 @@ import org.springframework.data.orient.object.OrientObjectDatabaseFactory;
 import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.domain.Address;
 import org.springframework.data.orient.object.domain.Person;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -163,12 +162,21 @@ public class PersonRepositoryTest {
 
     @Test
     public void deleteByActive() {
-
         assertThat(repository.deleteByActive(false)).isEqualTo(1);
         assertThat(repository.deleteByActive(true)).isEqualTo(4);
-
-
     }
 
+    @Test
+    public void countByActive() {
+        assertThat(repository.countByActive(false)).isEqualTo(1);
+        assertThat(repository.countByActive(true)).isEqualTo(4);
+    }
+
+    @Test
+    public void countByFirstNameAndActive() {
+
+        assertThat(repository.countByFirstNameAndActive("Dzmitry", true)).isEqualTo(1);
+
+    }
 
 }

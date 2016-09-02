@@ -31,6 +31,11 @@ public interface PersonRepository extends OrientObjectRepository<Person> {
 
     Long countByFirstName(String firstName);
 
+    Long countByActive(Boolean active);
+
+    @Query(value = "select count(*) from person where firstName = ? and active = ?", count = true)
+    Long countByFirstNameAndActive(String firstName, Boolean active);
+
     @Detach(DetachMode.ENTITY)
     List<Person> findByAddress_City(String city);
 
@@ -46,4 +51,6 @@ public interface PersonRepository extends OrientObjectRepository<Person> {
     Long deleteByActiveIsFalse();
 
     Long deleteByActive(Boolean active);
-}
+
+
+    }
