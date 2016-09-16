@@ -18,7 +18,7 @@ import org.springframework.data.repository.query.QueryLookupStrategy;
 
 import java.io.Serializable;
 
-// TODO: find out why inheriting from OrientRepositoryFactory does not work; would save some code; but this here works
+//TODO: find out why inheriting from OrientRepositoryFactory does not work; would save some code; but this here works
 public class OrientObjectRepositoryFactory extends RepositoryFactorySupport {
 
     private final OrientObjectOperations operations;

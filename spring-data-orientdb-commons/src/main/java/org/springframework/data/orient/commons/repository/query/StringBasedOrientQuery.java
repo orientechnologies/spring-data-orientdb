@@ -18,6 +18,7 @@ public class StringBasedOrientQuery extends AbstractOrientQuery {
         this.queryString = query;
         this.isCountQuery = method.hasAnnotatedQuery() ? method.getQueryAnnotation().count() : false;
         isDeleteQuery = query.toLowerCase().contains("delete");
+
     }
 
     @Override

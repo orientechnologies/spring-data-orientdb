@@ -22,8 +22,6 @@ public class OrientObjectDatabaseFactory extends AbstractOrientDatabaseFactory<O
     @Override
     protected void createPool() {
         pool = new OPartitionedDatabasePool(getUrl(), getUsername(), getPassword());
-
-
     }
 
     @Override

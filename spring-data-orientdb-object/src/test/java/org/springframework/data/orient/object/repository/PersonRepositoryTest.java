@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.orient.object.OrientDbObjectTestConfiguration;
 import org.springframework.data.orient.object.OrientObjectDatabaseFactory;
@@ -17,7 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {OrientDbObjectTestConfiguration.class})
@@ -35,6 +37,7 @@ public class PersonRepositoryTest {
     @Before
     public void setUp() {
 
+        //cleanup
         operations.command("delete from Address");
         operations.command("delete from Person");
 
@@ -69,19 +72,40 @@ public class PersonRepositoryTest {
 
     @Test
     public void findAllPersons() {
-        assertFalse(repository.findAll().isEmpty());
+        assertThat(repository.findAll())
+                .isNotEmpty()
+                .hasSize(5);
+
     }
 
     @Test
     public void countPerson() {
-        assertEquals(repository.count(), 5L);
+        assertThat(repository.count()).isEqualTo(5L);
     }
 
     @Test
     public void findByFirstNamePage() {
-        for (Person person : repository.findByFirstName("Dzmitry", new PageRequest(1, 5)).getContent()) {
+
+        assertThat(repository.findByFirstName("Jameson")).hasSize(1);
+        Page<Person> page = repository.findByFirstName("Jameson", new PageRequest(0, 5));
+
+        System.out.println(page.getNumberOfElements());
+//        assertThat(page.getContent())
+//                .hasSize(1)
+//        .first().extracting("firstName").isEqualTo("Dzmitry")
+        ;
+
+        for (Person person : repository.findByFirstName("Dzmitry", new PageRequest(0, 5)).getContent()) {
+            System.out.println(person);
             assertEquals(person.getFirstName(), "Dzmitry");
         }
+    }
+
+
+    @Test
+    public void findAllPaged() throws Exception {
+
+        assertThat(repository.findAll(new PageRequest(0, 5)).getContent()).hasSize(5);
     }
 
     @Test
@@ -107,35 +131,31 @@ public class PersonRepositoryTest {
 
     @Test
     public void findByFirstNameLike() {
-        for (Person person : repository.findByFirstNameLike("Dzm%")) {
-            assertTrue(person.getFirstName().startsWith("Dzm"));
-        }
+
+        assertThat(repository.findByFirstNameLike("Dzm%"))
+                .hasSize(1)
+                .first()
+                .hasFieldOrPropertyWithValue("firstName", "Dzmitry");
     }
 
     @Test
     public void findByLastName() {
-        assertFalse(repository.findByLastName("Naskou").isEmpty());
+        assertThat(repository.findByLastName("Naskou")).hasSize(1);
     }
 
     @Test
     public void findByLastNameLike() {
-        for (Person person : repository.findByLastNameLike("Na%")) {
-            assertTrue(person.getLastName().startsWith("Na"));
-        }
+        assertThat(repository.findByLastNameLike("Na%")).hasSize(1);
     }
 
     @Test
     public void findByFirstNameAndLastName() {
-        for (Person person : repository.findByFirstNameOrLastName("Dzmitry", "Naskou")) {
-            assertTrue(person.getFirstName().equals("Dzmitry") && person.getLastName().equals("Naskou"));
-        }
+        assertThat(repository.findByFirstNameAndLastName("Dzmitry", "Naskou")).hasSize(1);
     }
 
     @Test
     public void findByFirstNameOrLastName() {
-        for (Person person : repository.findByFirstNameOrLastName("Dzmitry", "Eliot")) {
-            assertTrue(person.getFirstName().equals("Dzmitry") || person.getLastName().equals("Eliot"));
-        }
+        assertThat(repository.findByFirstNameOrLastName("Dzmitry", "Eliot")).hasSize(2);
     }
 
     @Test
@@ -150,13 +170,28 @@ public class PersonRepositoryTest {
 
     @Test
     public void findByCityTest() {
-        List<Person> persons = repository.findByAddress_City("Minsk");
 
-        assertFalse(persons.isEmpty());
+        assertThat(repository.findByAddress_City("Minsk"))
+                .isNotEmpty()
+                .hasSize(1)
+                .first()
+                .extracting("address")
+                .extracting("city")
+                .hasSize(1)
+                .contains("Minsk");
+    }
 
-        for (Person person : persons) {
-            assertEquals(person.getAddress().getCity(), "Minsk");
-        }
+    @Test
+    public void findByCountryTest() {
+
+        assertThat(repository.findByAddress_Country("Belarus"))
+                .isNotEmpty()
+                .hasSize(1)
+                .first()
+                .extracting("address")
+                .extracting("country")
+                .hasSize(1)
+                .contains("Belarus");
     }
 
 
@@ -164,6 +199,7 @@ public class PersonRepositoryTest {
     public void deleteByActive() {
         assertThat(repository.deleteByActive(false)).isEqualTo(1);
         assertThat(repository.deleteByActive(true)).isEqualTo(4);
+        assertThat(repository.count()).isEqualTo(0);
     }
 
     @Test

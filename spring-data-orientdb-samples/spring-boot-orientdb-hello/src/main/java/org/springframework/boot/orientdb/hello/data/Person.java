@@ -20,8 +20,8 @@ public class Person {
      * Added to avoid a runtime error whereby the detachAll property is checked
      * for existence but not actually used.
      */
-    private String detachAll;
-
+//    private String detachAll;
+//
     private String firstName;
 
     private String lastName;

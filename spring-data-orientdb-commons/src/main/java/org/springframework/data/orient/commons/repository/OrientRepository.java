@@ -1,6 +1,7 @@
 package org.springframework.data.orient.commons.repository;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.orient.commons.repository.annotation.Detach;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

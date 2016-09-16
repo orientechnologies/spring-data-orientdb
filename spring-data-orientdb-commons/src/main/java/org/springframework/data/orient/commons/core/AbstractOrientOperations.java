@@ -23,7 +23,6 @@ import com.orientechnologies.orient.core.storage.ORecordCallback;
 import com.orientechnologies.orient.core.storage.ORecordMetadata;
 import com.orientechnologies.orient.core.storage.OStorage;
 import com.orientechnologies.orient.core.tx.OTransaction;
-import org.jooq.SQL;
 import org.springframework.data.orient.commons.repository.DetachMode;
 
 import java.io.IOException;
@@ -33,7 +32,6 @@ import java.util.*;
 import java.util.concurrent.Callable;
 
 public abstract class AbstractOrientOperations<T> implements OrientOperations<T> {
-    // private static final Logger logger = LoggerFactory.getLogger(AbstractOrientOperations.class);
 
     protected final OrientDatabaseFactory<T> dbf;
 

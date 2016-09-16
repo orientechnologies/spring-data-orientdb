@@ -31,9 +31,9 @@ public class SimpleOrientObjectRepository<T> extends SimpleOrientRepository<T> i
         super(operations, domainClass, cluster, repositoryInterface);
     }
 
-    public T detachAll(T entity) {
-        // TODO: solve this issue
-        //return ((OrientObjectOperations) super.operations).detachAll(entity, true);
-        return entity;
-    }
+//    public T detachAll(T entity) {
+//        // TODO: solve this issue
+//        //return ((OrientObjectOperations) super.operations).detachAll(entity, true);
+//        return entity;
+//    }
 }

@@ -228,11 +228,18 @@ public class OrientQueryCreator extends AbstractQueryCreator<String, Condition> 
         if (isCountQuery()) {
             return conditionStep;
         }
+
+
         if (sort == null) {
             return pageable == null ? conditionStep : conditionStep.and(field("@rid").gt(pageable.getOffset()));
-        } else {
-            return conditionStep.orderBy(toOrders(sort));
         }
+
+
+//        if (sort == null) {
+//            return conditionStep;
+//        }
+        return conditionStep.orderBy(toOrders(sort));
+
     }
 
     private Query limitIfPageable(SelectLimitStep<? extends Record> limitStep, Pageable pageable, Sort sort) {
@@ -240,9 +247,10 @@ public class OrientQueryCreator extends AbstractQueryCreator<String, Condition> 
             return limitStep;
         } else if (sort == null) {
             return limitStep.limit(pageable.getPageSize());
-        } else {
-            return limitStep.limit(pageable.getPageSize()).offset(pageable.getOffset());
         }
+
+        return limitStep.limit(pageable.getPageSize()).offset(pageable.getOffset());
+
     }
 
     private <A extends Annotation> A findAnnotation(Class<A> annotationType) {
