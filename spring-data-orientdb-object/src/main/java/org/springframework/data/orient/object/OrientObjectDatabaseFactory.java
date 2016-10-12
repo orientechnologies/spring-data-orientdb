@@ -1,6 +1,7 @@
 package org.springframework.data.orient.object;
 
 import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactory;
 
@@ -12,6 +13,7 @@ import org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactor
  */
 public class OrientObjectDatabaseFactory extends AbstractOrientDatabaseFactory<Object> {
 
+
     private OPartitionedDatabasePool pool;
 
     /**
@@ -21,12 +23,17 @@ public class OrientObjectDatabaseFactory extends AbstractOrientDatabaseFactory<O
 
     @Override
     protected void createPool() {
-        pool = new OPartitionedDatabasePool(getUrl(), getUsername(), getPassword());
+        //since max pool size was set, use it to create the partitioned pool
+        int maxPartitionSize = Runtime.getRuntime().availableProcessors();
+        pool = new OPartitionedDatabasePool(getUrl(), getUsername(), getPassword(),
+                maxPartitionSize, maxPoolSize);
     }
+
 
     @Override
     public OObjectDatabaseTx openDatabase() {
-        db = new OObjectDatabaseTx(pool.acquire());
+        ODatabaseDocumentTx documentTx = pool.acquire();
+        db = new OObjectDatabaseTx(documentTx);
         return db;
     }
 

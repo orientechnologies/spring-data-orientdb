@@ -6,20 +6,20 @@ public interface OrientDatabaseFactory<T> {
     /**
      * Default database username.
      */
-    public static final String DEFAULT_USERNAME = "admin";
+    String DEFAULT_USERNAME = "admin";
 
     /**
      * Default database password.
      */
-    public static final String DEFAULT_PASSWORD = "admin";
+    String DEFAULT_PASSWORD = "admin";
 
 
     /**
      * Default maximum pool size.
      */
-    public static final int DEFAULT_MAX_POOL_SIZE = 20;
+    int DEFAULT_MAX_POOL_SIZE = 20;
 
-    public ODatabase<T> db();
+    ODatabase<T> db();
 
     ODatabase<T> openDatabase();
 
@@ -36,7 +36,7 @@ public interface OrientDatabaseFactory<T> {
     void setPassword(String password);
 
     int getMaxPoolSize();
-
+    
     void setMaxPoolSize(int maxPoolSize);
 
     void dropDatabase();
