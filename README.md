@@ -19,13 +19,13 @@ Maven
 <dependency>
     <groupId>com.orientechnologies</groupId>
     <artifactId>spring-data-orientdb-object</artifactId>
-    <version>0.12</version>
+    <version>0.13</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-    group: 'com.orientechnologies', name: 'spring-data-orientdb-object', version: '0.12'
+    group: 'com.orientechnologies', name: 'spring-data-orientdb-object', version: '0.13'
 ```
 
 ### Example
@@ -40,13 +40,13 @@ Maven:
 <dependency>
     <groupId>com.orientechnologies</groupId>
     <artifactId>spring-data-orientdb-graph</artifactId>
-    <version>0.12</version>
+    <version>0.13</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-    group: 'com.orientechnologies', name: 'spring-data-orientdb-graph', version: '0.12'
+    group: 'com.orientechnologies', name: 'spring-data-orientdb-graph', version: '0.13'
 ```
 
 
@@ -55,12 +55,12 @@ Gradle:
 <dependency>
     <groupId>com.orientechnologies</groupId>
     <artifactId>spring-data-orientdb-document</artifactId>
-    <version>0.12</version>
+    <version>0.13</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-    group: 'com.orientechnologies', name: 'spring-data-orientdb-document', version: '0.12'
+    group: 'com.orientechnologies', name: 'spring-data-orientdb-document', version: '0.13'
 ```
 
