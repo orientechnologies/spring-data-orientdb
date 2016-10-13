@@ -6,6 +6,11 @@ import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -14,63 +19,32 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by frank on 11/10/2016.
- */
+@Transactional
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {OrientDbObjectTestConfiguration.class})
 public class OrientObjectDatabaseFactoryTest {
 
+
+    @Autowired
+    OrientObjectDatabaseFactory factory;
 
     @Rule
     public TestName name = new TestName();
 
+
     @Test
-    public void shouldUseMaxPoolSize() throws Exception {
+    public void shouldCountClassElements() throws Exception {
 
-        final OrientObjectDatabaseFactory fc = new OrientObjectDatabaseFactory();
+        OObjectDatabaseTx db = factory.db();
 
-        fc.setUrl("memory:" + name.getMethodName());
-        fc.setUsername("admin");
-        fc.setPassword("admin");
-        fc.setMaxPoolSize(10);
-        fc.init();
+        assertThat(db.countClass("OUser")).isEqualTo(3);
+    }
 
-        //do a query and assert on other thread
-        Runnable acquirer = new Runnable() {
-            @Override
-            public void run() {
+    @Test
+    public void shouldCountClusterElements() throws Exception {
 
-                //call th db 10 times in the same thread
-                for (int i = 0; i < 10; i++) {
+        OObjectDatabaseTx db = factory.db();
 
-                    OObjectDatabaseTx db = fc.db();
-
-//                    System.out.println(Thread.currentThread().getName() + " :: " + db.getUnderlying().hashCode());
-                    try {
-                        assertThat(db.isActiveOnCurrentThread()).isTrue();
-
-                        List<ODocument> res = db.query(new OSQLSynchQuery<ODocument>("SELECT * FROM OUser"));
-
-                        assertThat(res).hasSize(3);
-
-                    } finally {
-
-                        db.close();
-                    }
-                }
-            }
-
-        };
-
-        ExecutorService ex = Executors.newCachedThreadPool();
-
-        //spawn 20 threads
-        for (int i = 0; i < 20; i++) {
-
-            ex.submit(acquirer);
-        }
-
-        ex.awaitTermination(2, TimeUnit.SECONDS);
-
-
+        assertThat(db.countClusterElements("OUser")).isEqualTo(3);
     }
 }

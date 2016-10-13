@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {OrientDbObjectTestConfiguration.class})
 public class PersonRepositoryTest {
@@ -89,11 +90,6 @@ public class PersonRepositoryTest {
         assertThat(repository.findByFirstName("Jameson")).hasSize(1);
         Page<Person> page = repository.findByFirstName("Jameson", new PageRequest(0, 5));
 
-        System.out.println(page.getNumberOfElements());
-//        assertThat(page.getContent())
-//                .hasSize(1)
-//        .first().extracting("firstName").isEqualTo("Dzmitry")
-        ;
 
         for (Person person : repository.findByFirstName("Dzmitry", new PageRequest(0, 5)).getContent()) {
             System.out.println(person);
@@ -103,7 +99,7 @@ public class PersonRepositoryTest {
 
 
     @Test
-    public void findAllPaged() throws Exception {
+    public void findAllPaged() {
 
         assertThat(repository.findAll(new PageRequest(0, 5)).getContent()).hasSize(5);
     }
@@ -215,4 +211,6 @@ public class PersonRepositoryTest {
 
     }
 
+
 }
+

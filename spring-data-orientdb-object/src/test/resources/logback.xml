@@ -16,12 +16,12 @@
     </appender>
 
     <!--
-    -->
-    <logger name="org.springframework" level="INFO" />
+    <logger name="org.springframework" level="DEBUG" />
     <logger name="org.springframework.data.orientdb" level="INFO" />
     <logger name="org.springframework.data.orient.commons.core.OrientTransactionManager" level="INFO" />
     <logger name="org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactory" level="INFO" />
     <logger name="org.springframework.data.orient.object.OrientObjectDatabaseFactory" level="INFO" />
+    -->
     <root level="ERROR">
         <appender-ref ref="STDOUT" />
         <!--<appender-ref ref="FILE" />-->

@@ -36,10 +36,10 @@ public class OrientDbObjectTestConfiguration {
     public OrientObjectDatabaseFactory factory() {
         OrientObjectDatabaseFactory factory = new OrientObjectDatabaseFactory();
 
-        //factory.setUrl("plocal:target/spring-data-orientdb-db");
         factory.setUrl("memory:spring-data-orientdb-db");
         factory.setUsername("admin");
         factory.setPassword("admin");
+        factory.setMaxPoolSize(2);
 
         return factory;
     }
@@ -72,6 +72,8 @@ public class OrientDbObjectTestConfiguration {
             int id = db.addCluster(EMPLOYEE_HISTORY_CLUSTER);
             db.getMetadata().getSchema().getClass(Employee.class).addClusterId(id);
         }
+
+        db.close();
 
     }
 }

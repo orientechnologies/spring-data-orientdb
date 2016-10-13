@@ -542,9 +542,9 @@ public abstract class AbstractOrientOperations<T> implements OrientOperations<T>
                 return detachAll(result);
             case NONE:
         }
-
         return result;
     }
+
 
     @Override
     @SuppressWarnings("unchecked")

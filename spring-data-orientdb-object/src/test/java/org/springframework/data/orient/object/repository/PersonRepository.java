@@ -10,9 +10,10 @@ import org.springframework.data.orient.object.domain.Person;
 
 import java.util.List;
 
+
 public interface PersonRepository extends OrientObjectRepository<Person> {
 
-//    @Query("select from person where firstName = ?")
+    //    @Query("select from person where firstName = ?")
     List<Person> findByFirstName(String firstName);
 
     Page<Person> findByFirstName(String firstName, Pageable pageable);

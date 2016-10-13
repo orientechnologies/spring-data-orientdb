@@ -3,6 +3,8 @@ package org.springframework.data.orient.object;
 import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactory;
 
 /**
@@ -13,6 +15,7 @@ import org.springframework.data.orient.commons.core.AbstractOrientDatabaseFactor
  */
 public class OrientObjectDatabaseFactory extends AbstractOrientDatabaseFactory<Object> {
 
+    private static Logger log = LoggerFactory.getLogger(AbstractOrientDatabaseFactory.class);
 
     private OPartitionedDatabasePool pool;
 
