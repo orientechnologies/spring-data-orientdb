@@ -5,6 +5,7 @@ import org.springframework.data.orient.commons.repository.annotation.Detach;
 import org.springframework.data.orient.commons.repository.DetachMode;
 import org.springframework.data.orient.commons.repository.annotation.FetchPlan;
 import org.springframework.data.orient.commons.repository.annotation.Query;
+import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.query.QueryMethod;
 import org.springframework.util.StringUtils;
@@ -30,8 +31,8 @@ public final class OrientQueryMethod extends QueryMethod {
      * @param method the method
      * @param metadata the metadata
      */
-    public OrientQueryMethod(Method method, RepositoryMetadata metadata) {
-        super(method, metadata);
+    public OrientQueryMethod(Method method, RepositoryMetadata metadata, ProjectionFactory projectionFactory) {
+        super(method, metadata, projectionFactory);
         this.method = method;
         this.repositoryInterface = metadata.getRepositoryInterface();
     }
