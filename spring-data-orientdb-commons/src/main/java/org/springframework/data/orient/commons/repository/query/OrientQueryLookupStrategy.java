@@ -1,6 +1,7 @@
 package org.springframework.data.orient.commons.repository.query;
 
 import org.springframework.data.orient.commons.core.OrientOperations;
+import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.NamedQueries;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.query.QueryLookupStrategy;
@@ -27,10 +28,12 @@ public final class OrientQueryLookupStrategy {
          * @see org.springframework.data.repository.query.QueryLookupStrategy#
          * resolveQuery(java.lang.reflect.Method,
          * org.springframework.data.repository.core.RepositoryMetadata,
+         * org.springframework.data.projection.ProjectionFactory,
          * org.springframework.data.repository.core.NamedQueries)
          */
-        public final RepositoryQuery resolveQuery(java.lang.reflect.Method method, RepositoryMetadata metadata, NamedQueries namedQueries) {
-            return resolveQuery(new OrientQueryMethod(method, metadata), operations, namedQueries);
+        public final RepositoryQuery resolveQuery(java.lang.reflect.Method method, RepositoryMetadata metadata,
+                                                  ProjectionFactory projectionFactory, NamedQueries namedQueries) {
+            return resolveQuery(new OrientQueryMethod(method, metadata, projectionFactory), operations, namedQueries);
         }
 
         protected abstract RepositoryQuery resolveQuery(OrientQueryMethod method, OrientOperations template, NamedQueries namedQueries);

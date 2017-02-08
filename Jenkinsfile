@@ -12,7 +12,7 @@ node("master") {
         docker.image("${mvnJdk8Image}").inside("${env.VOLUMES}") {
             try {
 
-                sh "${mvnHome}/bin/mvn  --batch-mode -V -U  clean deploy -Dmaven.test.failure.ignore=true -Dsurefire.useFile=false"
+                sh "${mvnHome}/bin/mvn  --batch-mode -V -U  clean deploy -Dsurefire.useFile=false"
             } catch (e) {
                 currentBuild.result = 'FAILURE'
 
