@@ -25,6 +25,15 @@ public class OrientObjectRepositoryFactoryBean<T extends Repository<S, ID>, S, I
     @Autowired
     private OrientObjectOperations operations;
 
+    /**
+     * Creates a new {@link TransactionalRepositoryFactoryBeanSupport} for the given repository interface.
+     *
+     * @param repositoryInterface must not be {@literal null}.
+     */
+    protected OrientObjectRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
+        super(repositoryInterface);
+    }
+
     @Override
     protected RepositoryFactorySupport doCreateRepositoryFactory() {
         return new OrientObjectRepositoryFactory(operations);
