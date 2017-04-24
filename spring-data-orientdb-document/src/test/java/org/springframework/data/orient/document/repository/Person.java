@@ -1,5 +1,6 @@
 package org.springframework.data.orient.document.repository;
 
+
 import com.orientechnologies.orient.core.annotation.OId;
 import com.orientechnologies.orient.core.annotation.OVersion;
 
@@ -7,16 +8,16 @@ public class Person {
 
     @OId
     private String rid;
-    
+
     @OVersion
     private Long version;
-    
+
     private String firstName;
- 
+
     private String lastName;
-    
+
     private Address address;
-    
+
     private Boolean active;
 
     public String getRid() {
