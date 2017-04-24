@@ -9,7 +9,7 @@ import org.jooq.impl.DSL;
 public class JooqUtils {
 
     public static DSLContext context() {
-        return DSL.using(SQLDialect.MYSQL);
+        return DSL.using(SQLDialect.DEFAULT);
     }
     
     public static SelectJoinStep<? extends Record> from(String source) {

@@ -1,16 +1,36 @@
 package org.springframework.data.orient.commons.repository.query;
 
 import org.springframework.data.orient.commons.core.OrientOperations;
+import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.NamedQueries;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.data.repository.query.QueryLookupStrategy.Key;
 import org.springframework.data.repository.query.RepositoryQuery;
 
+import java.lang.reflect.Method;
+
 public final class OrientQueryLookupStrategy {
 
     private OrientQueryLookupStrategy() {
         super();
+    }
+
+    public static QueryLookupStrategy create(OrientOperations operations, Key key) {
+        if (key == null) {
+            return new CreateIfNotFoundQueryLookupStrategy(operations);
+        }
+
+        switch (key) {
+            case CREATE:
+                return new CreateQueryLookupStrategy(operations);
+            case USE_DECLARED_QUERY:
+                return new DeclaredQueryLookupStrategy(operations);
+            case CREATE_IF_NOT_FOUND:
+                return new CreateIfNotFoundQueryLookupStrategy(operations);
+            default:
+                throw new IllegalArgumentException(String.format("Unsupported query lookup strategy %s!", key));
+        }
     }
 
     private abstract static class AbstractQueryLookupStrategy implements QueryLookupStrategy {
@@ -23,14 +43,14 @@ public final class OrientQueryLookupStrategy {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.springframework.data.repository.query.QueryLookupStrategy#
          * resolveQuery(java.lang.reflect.Method,
          * org.springframework.data.repository.core.RepositoryMetadata,
          * org.springframework.data.repository.core.NamedQueries)
          */
-        public final RepositoryQuery resolveQuery(java.lang.reflect.Method method, RepositoryMetadata metadata, NamedQueries namedQueries) {
-            return resolveQuery(new OrientQueryMethod(method, metadata), operations, namedQueries);
+        public final RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata, ProjectionFactory factory, NamedQueries namedQueries) {
+            return resolveQuery(new OrientQueryMethod(method, metadata,factory), operations, namedQueries);
         }
 
         protected abstract RepositoryQuery resolveQuery(OrientQueryMethod method, OrientOperations template, NamedQueries namedQueries);
@@ -41,7 +61,7 @@ public final class OrientQueryLookupStrategy {
         /**
          * Instantiates a new {@link CreateQueryLookupStrategy} lookup strategy.
          *
-         * @param db the application database service
+         * @param template the application database service
          */
         public CreateQueryLookupStrategy(OrientOperations template) {
             super(template);
@@ -88,10 +108,14 @@ public final class OrientQueryLookupStrategy {
 
     private static class CreateIfNotFoundQueryLookupStrategy extends AbstractQueryLookupStrategy {
 
-        /** The declared query strategy. */
+        /**
+         * The declared query strategy.
+         */
         private final DeclaredQueryLookupStrategy strategy;
 
-        /** The create query strategy. */
+        /**
+         * The create query strategy.
+         */
         private final CreateQueryLookupStrategy createStrategy;
 
         /**
@@ -115,23 +139,6 @@ public final class OrientQueryLookupStrategy {
             } catch (IllegalStateException e) {
                 return createStrategy.resolveQuery(method, template, namedQueries);
             }
-        }
-    }
-
-    public static QueryLookupStrategy create(OrientOperations operations, Key key) {
-        if (key == null) {
-            return new CreateIfNotFoundQueryLookupStrategy(operations);
-        }
-
-        switch (key) {
-            case CREATE:
-                return new CreateQueryLookupStrategy(operations);
-            case USE_DECLARED_QUERY:
-                return new DeclaredQueryLookupStrategy(operations);
-            case CREATE_IF_NOT_FOUND:
-                return new CreateIfNotFoundQueryLookupStrategy(operations);
-            default:
-                throw new IllegalArgumentException(String.format("Unsupported query lookup strategy %s!", key));
         }
     }
 

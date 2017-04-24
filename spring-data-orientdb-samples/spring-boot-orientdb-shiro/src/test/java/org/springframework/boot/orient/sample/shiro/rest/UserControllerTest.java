@@ -2,8 +2,8 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.orient.sample.shiro.Application;
 import org.springframework.boot.orient.sample.shiro.OrientDbConfiguration;
@@ -26,30 +29,25 @@ import org.springframework.boot.orient.sample.shiro.model.User;
 import org.springframework.boot.orient.sample.shiro.repository.PermissionRepository;
 import org.springframework.boot.orient.sample.shiro.repository.RoleRepository;
 import org.springframework.boot.orient.sample.shiro.repository.UserRepository;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertEquals;
 
-@SpringApplicationConfiguration(classes
-        = {Application.class, OrientDbConfiguration.class, ShiroConfiguration.class})
+@SpringBootTest(classes = {Application.class, OrientDbConfiguration.class, ShiroConfiguration.class})
 @WebAppConfiguration
-@IntegrationTest
-@TestExecutionListeners(inheritListeners = false, listeners
-        = {DependencyInjectionTestExecutionListener.class})
-public class UserControllerTest extends AbstractTestNGSpringContextTests {
+@TestExecutionListeners(inheritListeners = false, listeners = {DependencyInjectionTestExecutionListener.class})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class UserControllerTest {
 
     private final String BASE_URL = "http://localhost:8080/users";
     private final String USER_NAME = "Paulo Pires";
@@ -64,7 +62,7 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private PermissionRepository permissionRepo;
 
-    @BeforeClass
+    @Before
     public void setUp() {
         // clean-up users, roles and permissions
         userRepo.deleteAll();

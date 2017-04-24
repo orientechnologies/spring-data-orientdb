@@ -6,7 +6,7 @@ import org.springframework.data.repository.config.RepositoryConfigurationExtensi
 import java.lang.annotation.Annotation;
 
 /**
- * {@link ImportBeanDefinitionRegistrar} to enable {@link EnableOrientRepositories} annotation.
+ * {@link org.springframework.context.annotation.ImportBeanDefinitionRegistrar} to enable {@link EnableOrientRepositories} annotation.
  * 
  * @author Dzmitry_Naskou
  */

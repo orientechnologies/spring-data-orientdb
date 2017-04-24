@@ -1,12 +1,15 @@
 package org.springframework.data.orient.commons.repository.config;
 
-import org.springframework.data.orient.commons.repository.config.scanner.test.*;
-import org.testng.annotations.Test;
+import org.junit.Test;
+import org.springframework.data.orient.commons.repository.config.scanner.test.EntitiesMarker;
+import org.springframework.data.orient.commons.repository.config.scanner.test.SimpleEdgeEntity;
+import org.springframework.data.orient.commons.repository.config.scanner.test.SimpleVertexEntity;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * @author saljuama

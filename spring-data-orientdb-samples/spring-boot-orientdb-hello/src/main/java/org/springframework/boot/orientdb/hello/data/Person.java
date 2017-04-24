@@ -2,6 +2,7 @@ package org.springframework.boot.orientdb.hello.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Id;
 import javax.persistence.Version;
 
@@ -10,21 +11,21 @@ public class Person {
 
     @Id
     private String id;
-    
+
     @Version
     @JsonIgnore
     private Long version;
-    
+
     /**
      * Added to avoid a runtime error whereby the detachAll property is checked
      * for existence but not actually used.
      */
-    private String detachAll;
-    
+//    private String detachAll;
+//
     private String firstName;
-    
+
     private String lastName;
-    
+
     private Integer age;
 
     public String getId() {

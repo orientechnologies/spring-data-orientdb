@@ -1,5 +1,6 @@
 package org.springframework.data.orient.commons.repository.query;
 
+import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.orientechnologies.orient.core.sql.query.OSQLQuery;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import org.springframework.data.orient.commons.core.OrientOperations;
@@ -12,13 +13,19 @@ import org.springframework.data.repository.query.parser.PartTree;
  */
 public class PartTreeOrientQuery extends AbstractOrientQuery {
 
-    /** The domain class. */
+    /**
+     * The domain class.
+     */
     private final Class<?> domainClass;
 
-    /** The tree. */
+    /**
+     * The tree.
+     */
     private final PartTree tree;
 
-    /** The parameters. */
+    /**
+     * The parameters.
+     */
     private final OrientParameters parameters;
 
     private final OrientQueryMethod method;
@@ -26,7 +33,7 @@ public class PartTreeOrientQuery extends AbstractOrientQuery {
     /**
      * Instantiates a new {@link PartTreeOrientQuery} from given {@link OrientQueryMethod} and {@link OrientOperations}.
      *
-     * @param method the query method
+     * @param method     the query method
      * @param operations the orient object template
      */
     public PartTreeOrientQuery(OrientQueryMethod method, OrientOperations operations) {
@@ -45,9 +52,9 @@ public class PartTreeOrientQuery extends AbstractOrientQuery {
     @SuppressWarnings("rawtypes")
     protected OSQLQuery<?> doCreateQuery(Object[] values) {
         OrientParameterAccessor accessor = new OrientParametersParameterAccessor(parameters, values);
-        
+
         OrientQueryCreator creator = new OrientQueryCreator(tree, method, accessor);
-        
+
         return new OSQLSynchQuery(creator.createQuery());
     }
 
@@ -58,10 +65,19 @@ public class PartTreeOrientQuery extends AbstractOrientQuery {
     @SuppressWarnings("rawtypes")
     protected OSQLQuery<?> doCreateCountQuery(Object[] values) {
         OrientParameterAccessor accessor = new OrientParametersParameterAccessor(parameters, values);
-        
+
         OrientQueryCreator creator = new OrientCountQueryCreator(tree, method, accessor);
-        
+
         return new OSQLSynchQuery(creator.createQuery());
+    }
+
+    @Override
+    protected OCommandSQL doCreateCommand(Object[] values) {
+        OrientParameterAccessor accessor = new OrientParametersParameterAccessor(parameters, values);
+
+        OrientQueryCreator creator = new OrientQueryCreator(tree, method, accessor);
+
+        return new OCommandSQL(creator.createQuery());
     }
 
     /* (non-Javadoc)
@@ -70,5 +86,10 @@ public class PartTreeOrientQuery extends AbstractOrientQuery {
     @Override
     protected boolean isCountQuery() {
         return tree.isCountProjection();
+    }
+
+    @Override
+    protected boolean isDeleteQuery() {
+        return tree.isDelete();
     }
 }

@@ -339,6 +339,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
      * @return the query
      */
     private OSQLQuery<T> getQuery(String source, Sort sort) {
+
         Query query = DSL.using(SQLDialect.MYSQL).select().from(source).orderBy(QueryUtils.toOrders(sort));
 
         return new OSQLSynchQuery<T>(query.getSQL(ParamType.INLINED));

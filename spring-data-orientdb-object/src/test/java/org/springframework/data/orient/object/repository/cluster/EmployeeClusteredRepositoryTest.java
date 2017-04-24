@@ -3,10 +3,9 @@ package org.springframework.data.orient.object.repository.cluster;
 import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
-import java.util.ArrayList;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,25 +15,24 @@ import org.springframework.data.orient.object.OrientObjectDatabaseFactory;
 import org.springframework.data.orient.object.OrientObjectOperations;
 import org.springframework.data.orient.object.domain.Employee;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.data.orient.object.OrientDbObjectTestConfiguration.EMPLOYEE_TMP_CLUSTER;
-import org.testng.Assert;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@TransactionConfiguration(defaultRollback = false)
+@Rollback
 @ContextConfiguration(classes = OrientDbObjectTestConfiguration.class)
 @Transactional
-public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContextTests {
+public class EmployeeClusteredRepositoryTest extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger logger = LoggerFactory.getLogger(EmployeeClusteredRepositoryTest.class);
 
     @Autowired
     OrientObjectDatabaseFactory dbf;
@@ -48,8 +46,10 @@ public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContext
     @Autowired
     OrientObjectOperations operations;
 
-    @BeforeClass
+    @Before
     public void before() {
+        operations.command("delete from employee");
+
         operations.command("insert into cluster:employee (firstName, lastName, active) values ('Dzmitry', 'Naskou', true)");
         operations.command("insert into cluster:employee (firstName, lastName, active) values ('Koby', 'Eliot', true)");
         operations.command("insert into cluster:employee_tmp (firstName, lastName, active) values ('Ronny', 'Carlisle', true)");
@@ -59,7 +59,8 @@ public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContext
 
     @Test
     public void findAll() {
-        logger.debug("Employees: {}", repository.findAll());
+
+        logger.debug("Employees: " + repository.findAll());
     }
 
     @Test
@@ -89,7 +90,7 @@ public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContext
 
     @Test
     public void findAllByCluster() {
-        logger.debug("Employees: {}", repository.findAll(EMPLOYEE_TMP_CLUSTER));
+        logger.debug("Employees: " + repository.findAll(EMPLOYEE_TMP_CLUSTER));
     }
 
     @Test
@@ -97,7 +98,7 @@ public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContext
         OObjectDatabaseTx db = dbf.openDatabase();
 
         for (OClass c : db.getMetadata().getSchema().getClasses()) {
-            logger.debug("Class: {}", c);
+            logger.debug("Class: " + c);
         }
 
         db.close();
@@ -119,7 +120,7 @@ public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContext
         OObjectDatabaseTx db = dbf.openDatabase();
 
         for (int i : db.getMetadata().getSchema().getClass(Employee.class).getClusterIds()) {
-            logger.debug("Cluster ID: {}", i);
+            logger.debug("Cluster ID: " + i);
         }
 
         db.close();
@@ -158,7 +159,7 @@ public class EmployeeClusteredRepositoryTest extends AbstractTestNGSpringContext
 
     @Test
     public void findByLastNameTest() {
-        logger.debug("Employee: {}", repository.findByLastName("Naskou"));
+        logger.debug("Employee: " + repository.findByLastName("Naskou"));
     }
 
     @Test

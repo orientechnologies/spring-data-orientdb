@@ -1,5 +1,4 @@
-Spring Data OrientDB
-====================
+# Spring Data OrientDB
 
 The primary goal of the [Spring Data](http://projects.spring.io/) project is to make it easier to build Spring-powered applications that use new data access technologies such as non-relational databases, map-reduce frameworks, and cloud based data services.
 
@@ -9,31 +8,59 @@ The document module is based on the [Spring Data MongoDB](http://projects.spring
 
 [![Build Status](https://drone.io/github.com/vidakovic/spring-data-orientdb/status.png)](https://drone.io/github.com/vidakovic/spring-data-orientdb/latest)
 
-To include OrientDB Spring Data in your Java project via Maven, put one of the snippets below in your pom.xml
+To include OrientDB Spring Data in your Java project via Maven, put one of the snippets below in your pom.xml or build.gradle
 
-### Graph API
+## Object API
+
+### Dependency management
+
+Maven
+```xml
+<dependency>
+    <groupId>com.orientechnologies</groupId>
+    <artifactId>spring-data-orientdb-object</artifactId>
+    <version>0.13</version>
+</dependency>
+```
+
+Gradle:
+```groovy
+    group: 'com.orientechnologies', name: 'spring-data-orientdb-object', version: '0.13'
+```
+
+### Example
+
+To 
+
+
+## Graph API
+
+Maven:
 ```xml
 <dependency>
     <groupId>com.orientechnologies</groupId>
     <artifactId>spring-data-orientdb-graph</artifactId>
-    <version>0.11</version>
+    <version>0.13</version>
 </dependency>
 ```
+
+Gradle:
+```groovy
+    group: 'com.orientechnologies', name: 'spring-data-orientdb-graph', version: '0.13'
+```
+
 
 ### Document API
 ```xml
 <dependency>
     <groupId>com.orientechnologies</groupId>
     <artifactId>spring-data-orientdb-document</artifactId>
-    <version>0.11</version>
+    <version>0.13</version>
 </dependency>
 ```
 
-### Object API
-```xml
-<dependency>
-    <groupId>com.orientechnologies</groupId>
-    <artifactId>spring-data-orientdb-object</artifactId>
-    <version>0.11</version>
-</dependency>
+Gradle:
+```groovy
+    group: 'com.orientechnologies', name: 'spring-data-orientdb-document', version: '0.13'
 ```
+

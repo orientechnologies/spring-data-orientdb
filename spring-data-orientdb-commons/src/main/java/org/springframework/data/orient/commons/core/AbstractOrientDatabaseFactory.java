@@ -13,37 +13,43 @@ import static org.springframework.util.Assert.notNull;
 /**
  * A base factory for creating {@link com.orientechnologies.orient.core.db.ODatabase} objects.
  *
- * @author Dzmitry_Naskou
  * @param <T> the type of database to handle
+ * @author Dzmitry_Naskou
  */
 public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabaseFactory<T> {
 
-    /** The logger. */
+    /**
+     * The logger.
+     */
     private static Logger log = LoggerFactory.getLogger(AbstractOrientDatabaseFactory.class);
 
-    /** The username. */
+    /**
+     * The username.
+     */
     protected String username = DEFAULT_USERNAME;
 
-    /** The password. */
+    /**
+     * The password.
+     */
     protected String password = DEFAULT_PASSWORD;
 
-    /** The min pool size. */
-    protected int minPoolSize = DEFAULT_MIN_POOL_SIZE;
 
-    /** The max pool size. */
+    /**
+     * The max pool size.
+     */
     protected int maxPoolSize = DEFAULT_MAX_POOL_SIZE;
 
     protected Boolean autoCreate;
 
     protected String url;
-    
+
     @PostConstruct
     public void init() {
         notNull(url);
         notNull(username);
         notNull(password);
 
-        if(autoCreate==null) {
+        if (autoCreate == null) {
             autoCreate = !getUrl().startsWith("remote:");
         }
 
@@ -64,22 +70,17 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
     protected abstract ODatabaseInternal<?> newDatabase();
 
     public ODatabase<T> db() {
-        ODatabase<T> db;
-        if(!ODatabaseRecordThreadLocal.INSTANCE.isDefined()) {
-            db = openDatabase();
-            log.debug("acquire db from pool {}", db.hashCode());
-        } else {
-            db = (ODatabase<T>)ODatabaseRecordThreadLocal.INSTANCE.get().getDatabaseOwner();
-
-            if(db.isClosed()) {
-                db = openDatabase();
-                log.debug("re-opened db {}", db.hashCode());
-            } else {
+        ODatabase<T> db = openDatabase();
                 log.debug("use existing db {}", db.hashCode());
-            }
-        }
-
         return db;
+    }
+
+
+    @Override
+    public void dropDatabase() {
+        ODatabaseInternal<?> database = newDatabase();
+        database.open(username, password);
+        database.drop();
     }
 
     protected void createDatabase(ODatabase<?> db) {
@@ -145,23 +146,6 @@ public abstract class AbstractOrientDatabaseFactory<T> implements OrientDatabase
         this.password = password;
     }
 
-    /**
-     * Gets the min pool size.
-     *
-     * @return the min pool size
-     */
-    public int getMinPoolSize() {
-        return minPoolSize;
-    }
-
-    /**
-     * Sets the min pool size.
-     *
-     * @param minPoolSize the new min pool size
-     */
-    public void setMinPoolSize(int minPoolSize) {
-        this.minPoolSize = minPoolSize;
-    }
 
     /**
      * Gets the max pool size.
