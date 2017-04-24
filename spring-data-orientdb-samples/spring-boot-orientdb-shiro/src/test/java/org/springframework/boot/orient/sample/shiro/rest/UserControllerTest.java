@@ -29,9 +29,8 @@ import org.springframework.boot.orient.sample.shiro.model.User;
 import org.springframework.boot.orient.sample.shiro.repository.PermissionRepository;
 import org.springframework.boot.orient.sample.shiro.repository.RoleRepository;
 import org.springframework.boot.orient.sample.shiro.repository.UserRepository;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -44,9 +43,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
-@SpringApplicationConfiguration(classes = {Application.class, OrientDbConfiguration.class, ShiroConfiguration.class})
+@SpringBootTest(classes = {Application.class, OrientDbConfiguration.class, ShiroConfiguration.class})
 @WebAppConfiguration
-@IntegrationTest
 @TestExecutionListeners(inheritListeners = false, listeners = {DependencyInjectionTestExecutionListener.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserControllerTest {
