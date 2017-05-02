@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -14,6 +15,9 @@
     <packaging>jar</packaging>
     <name>Sample - Spring Boot OrientDB Hello</name>
 
+    <properties>
+        <jetty.version>9.2.21.v20170120</jetty.version>
+    </properties>
     <dependencies>
 
         <!--  spring boot -->
@@ -27,12 +31,15 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+
         <!--  test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Spring Data OrientDB -->
         <dependency>
             <groupId>com.orientechnologies</groupId>
             <artifactId>spring-data-orientdb-object</artifactId>
