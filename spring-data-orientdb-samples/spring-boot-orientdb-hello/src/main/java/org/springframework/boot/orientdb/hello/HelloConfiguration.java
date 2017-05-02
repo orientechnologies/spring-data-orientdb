@@ -16,31 +16,30 @@ import javax.annotation.PostConstruct;
 @EnableOrientRepositories(basePackages = "org.springframework.boot.orientdb.hello.data")
 public class HelloConfiguration {
 
-    @Bean
-    public OrientObjectDatabaseFactory factory() {
-        OrientObjectDatabaseFactory factory = new OrientObjectDatabaseFactory();
+  @Bean
+  public OrientObjectDatabaseFactory factory() {
+    OrientObjectDatabaseFactory factory = new OrientObjectDatabaseFactory();
 
-        factory.setUrl("memory:helloDb");
-        factory.setUsername("admin");
-        factory.setPassword("admin");
-        factory.setMaxPoolSize(10);
+    factory.setUrl("memory:helloDb");
+    factory.setUsername("admin");
+    factory.setPassword("admin");
+    factory.setMaxPoolSize(10);
 
-        return factory;
-    }
+    return factory;
+  }
 
-    @Bean
-    public OrientTransactionManager transactionManager() {
-        return new OrientTransactionManager(factory());
-    }
+  @Bean
+  public OrientTransactionManager transactionManager() {
+    return new OrientTransactionManager(factory());
+  }
 
-    @Bean
-    public OrientObjectTemplate objectTemplate() {
-        return new OrientObjectTemplate(factory());
-    }
+  @Bean
+  public OrientObjectTemplate objectTemplate() {
+    return new OrientObjectTemplate(factory());
+  }
 
-
-    @PostConstruct
-    public void registerEntities() {
-        factory().db().getEntityManager().registerEntityClass(Person.class);
-    }
+  @PostConstruct
+  public void registerEntities() {
+    factory().db().getEntityManager().registerEntityClass(Person.class);
+  }
 }
