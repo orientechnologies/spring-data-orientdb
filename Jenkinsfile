@@ -1,7 +1,7 @@
 #!groovy
 node("master") {
     def mvnHome = tool 'mvn'
-    def mvnJdk8Image = "orientdb/mvn-gradle-zulu-jdk-8:20161125"
+    def mvnJdk8Image = "orientdb/mvn-gradle-zulu-jdk-8"
 
     stage('Source checkout') {
 
@@ -12,7 +12,7 @@ node("master") {
         docker.image("${mvnJdk8Image}").inside("${env.VOLUMES}") {
             try {
 
-                sh "${mvnHome}/bin/mvn  --batch-mode -V -U  clean deploy -Dmaven.test.failure.ignore=true -Dsurefire.useFile=false"
+                sh "${mvnHome}/bin/mvn  --batch-mode -V -U -fae  clean deploy -Dmaven.test.failure.ignore=true -Dsurefire.useFile=false"
             } catch (e) {
                 currentBuild.result = 'FAILURE'
 
