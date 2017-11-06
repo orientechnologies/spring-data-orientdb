@@ -1,5 +1,8 @@
 #!groovy
 node("master") {
+    properties([[$class: 'BuildDiscarderProperty', 
+                 strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', 
+                            artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10']]])
     ansiColor('xterm') {
 
         def mvnHome = tool 'mvn'
