@@ -14,7 +14,7 @@ node("master") {
         }
 
         stage('Run tests on Java8') {
-            docker.image("${mvnJdk8Image}").inside("${env.VOLUMES}") {
+            docker.image("${mvnJdk8Image}").inside("--memory=5g ${env.VOLUMES}") {
                 try {
 
                     sh "${mvnHome}/bin/mvn  --batch-mode -V -U  clean deploy -Dmaven.test.failure.ignore=true -Dsurefire.useFile=false"
