@@ -162,7 +162,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 
         ODatabaseInternal<?> oldDb = (ODatabaseInternal<?>) suspendedResources;
         TransactionSynchronizationManager.bindResource(dbf, oldDb);
-        ODatabaseRecordThreadLocal.INSTANCE.set((ODatabaseDocumentInternal) oldDb.getUnderlying());
+        ODatabaseRecordThreadLocal.instance().set((ODatabaseDocumentInternal) oldDb.getUnderlying());
     }
 
     /* (non-Javadoc)
