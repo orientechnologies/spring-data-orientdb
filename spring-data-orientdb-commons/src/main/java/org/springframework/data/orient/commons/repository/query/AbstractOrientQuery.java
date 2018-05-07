@@ -1,6 +1,5 @@
 package org.springframework.data.orient.commons.repository.query;
 
-import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.orientechnologies.orient.core.sql.query.OSQLQuery;
 import org.springframework.data.orient.commons.core.OrientOperations;
 import org.springframework.data.orient.commons.repository.DetachMode;
@@ -60,66 +59,10 @@ public abstract class AbstractOrientQuery implements RepositoryQuery {
         return execution.execute(this, getDetachMode(), values);
     }
 
-    /**
-     * Creates the orient query.
-     *
-     * @param values the parameters for query
-     * @return the OSQL query
-     */
-    @SuppressWarnings("rawtypes")
-    protected OSQLQuery<?> createQuery(Object[] values) {
-        return applyFetchPlan(doCreateQuery(values));
-    }
 
-    /**
-     * Creates the orient command.
-     *
-     * @param values the parameters for query
-     * @return the OSQL query
-     */
-    @SuppressWarnings("rawtypes")
-    protected OCommandSQL createCommand(Object[] values) {
-        return doCreateCommand(values);
-    }
+    protected abstract String toSql(Object[] params);
 
-
-    /**
-     * Creates the count query.
-     *
-     * @param values the parameters for query
-     * @return the OSQL query
-     */
-    @SuppressWarnings("rawtypes")
-    protected OSQLQuery<?> createCountQuery(Object[] values) {
-        return doCreateCountQuery(values);
-    }
-
-    /**
-     * Do create query for specific source.
-     *
-     * @param values the parameters for query
-     * @return the OSQL query
-     */
-    @SuppressWarnings("rawtypes")
-    protected abstract OSQLQuery<?> doCreateQuery(Object[] values);
-
-    /**
-     * Do create count query for specific source.
-     *
-     * @param values the parameters for query
-     * @return the OSQL query
-     */
-    @SuppressWarnings("rawtypes")
-    protected abstract OSQLQuery<?> doCreateCountQuery(Object[] values);
-
-    /**
-     * Do create count query for specific source.
-     *
-     * @param values the parameters for query
-     * @return the OSQL Command
-     */
-
-    protected abstract OCommandSQL doCreateCommand(Object[] values);
+    protected abstract String toSqlCount(Object[] params);
 
     /**
      * Gets the execution for query.

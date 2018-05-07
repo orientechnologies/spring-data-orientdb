@@ -1,9 +1,5 @@
 package org.springframework.data.orient.commons.repository.query;
 
-import com.orientechnologies.orient.core.record.impl.ODocument;
-import com.orientechnologies.orient.core.sql.OCommandSQL;
-import com.orientechnologies.orient.core.sql.query.OSQLQuery;
-import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import org.springframework.data.orient.commons.core.OrientOperations;
 
 public class StringBasedOrientQuery extends AbstractOrientQuery {
@@ -22,29 +18,6 @@ public class StringBasedOrientQuery extends AbstractOrientQuery {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    protected OSQLQuery<?> doCreateQuery(Object[] values) {
-        OrientParameterAccessor accessor = new OrientParametersParameterAccessor(getQueryMethod().getParameters(), values);
-        String sortedQuery = QueryUtils.applySorting(queryString, accessor.getSort());
-
-        return new OSQLSynchQuery(sortedQuery);
-    }
-
-    @Override
-    @SuppressWarnings("rawtypes")
-    protected OSQLQuery<?> doCreateCountQuery(Object[] values) {
-        return new OSQLSynchQuery<ODocument>(queryString);
-    }
-
-    @Override
-    protected OCommandSQL doCreateCommand(Object[] values) {
-        OrientParameterAccessor accessor = new OrientParametersParameterAccessor(getQueryMethod().getParameters(), values);
-        String sortedQuery = QueryUtils.applySorting(queryString, accessor.getSort());
-
-        return new OCommandSQL(sortedQuery);
-    }
-
-    @Override
     protected boolean isCountQuery() {
         return this.isCountQuery;
     }
@@ -53,4 +26,15 @@ public class StringBasedOrientQuery extends AbstractOrientQuery {
     protected boolean isDeleteQuery() {
         return isDeleteQuery;
     }
+
+    @Override
+    protected String toSql(Object[] values) {
+        return queryString;
+    }
+
+    @Override
+    protected String toSqlCount(Object[] values) {
+        return queryString;
+    }
+
 }
