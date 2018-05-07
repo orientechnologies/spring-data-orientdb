@@ -20,12 +20,6 @@
             <artifactId>spring-data-orientdb-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <!-- orientdb -->
-        <dependency>
-            <groupId>com.orientechnologies</groupId>
-            <artifactId>orientdb-object</artifactId>
-        </dependency>
-
+        
     </dependencies>
 </project>
