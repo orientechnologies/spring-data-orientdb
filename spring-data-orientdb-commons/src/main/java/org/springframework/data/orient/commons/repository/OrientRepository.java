@@ -1,7 +1,6 @@
 package org.springframework.data.orient.commons.repository;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.data.orient.commons.repository.annotation.Detach;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -94,7 +93,6 @@ public interface OrientRepository<T> extends PagingAndSortingRepository<T, Strin
     /* (non-Javadoc)
      * @see org.springframework.data.repository.CrudRepository#findAll(java.lang.Iterable)
      */
-    @Override
     List<T> findAll(Iterable<String> ids);
     
     /**
@@ -110,4 +108,6 @@ public interface OrientRepository<T> extends PagingAndSortingRepository<T, Strin
      * @param domainClass the domain class
      */
     void deleteAll(Class<? extends T> domainClass);
+
+
 }

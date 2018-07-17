@@ -12,10 +12,6 @@
  */
 package org.springframework.boot.orient.sample.shiro;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.orient.commons.core.OrientTransactionManager;
@@ -69,11 +65,5 @@ public class OrientDbConfiguration {
     }
 
 
-    @Bean
-    public EmbeddedServletContainerFactory servletContainer() {
-        TomcatEmbeddedServletContainerFactory factory =
-                new TomcatEmbeddedServletContainerFactory();
-        return factory;
-    }
 
 }

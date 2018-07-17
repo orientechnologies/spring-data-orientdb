@@ -65,7 +65,7 @@ public class PersonRepositoryTest {
 
     String rid = repository.save(person).getRid();
 
-    Person result = repository.findOne(rid);
+    Person result = repository.findById(rid).get();
 
     assertEquals(result.getFirstName(), person.getFirstName());
     assertEquals(result.getLastName(), person.getLastName());
