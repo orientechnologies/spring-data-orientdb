@@ -24,4 +24,9 @@ public class OrientRepositoryConfigExtension extends RepositoryConfigurationExte
     protected String getModulePrefix() {
         return "orient";
     }
+
+    @Override
+    public String getRepositoryFactoryBeanClassName() {
+        return OrientRepositoryFactoryBean.class.getName();
+    }
 }

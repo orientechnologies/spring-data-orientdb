@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Default implementation of the {@link org.springframework.data.repository.PagingAndSortingRepository} interface for OrientDB.
@@ -97,6 +98,25 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
     return strategy.save(entity);
   }
 
+  @Override
+  public <S extends T> Iterable<S> saveAll(Iterable<S> iterable) {
+    List<S> result = new ArrayList<>();
+    for (S s : iterable) {
+      result.add(save(s));
+    }
+    return result;
+  }
+
+  @Override
+  public Optional<T> findById(String id) {
+    return Optional.ofNullable(operations.load(new ORecordId(id)));
+  }
+
+  @Override
+  public boolean existsById(String id) {
+    return findById(id).isPresent();
+  }
+
   /* (non-Javadoc)
    * @see org.springframework.data.orient.repository.OrientRepository#save(java.lang.Object, java.lang.String)
    */
@@ -143,7 +163,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
    * @see org.springframework.data.repository.CrudRepository#findOne(java.io.Serializable)
    */
   public T findOne(String id) {
-    return operations.load(new ORecordId(id));
+    return findById(id).orElse(null);
   }
 
   /* (non-Javadoc)
@@ -159,6 +179,15 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
   @Override
   public List<T> findAll() {
     return operations.query(getQuery((Sort) null));
+  }
+
+  @Override
+  public Iterable<T> findAllById(Iterable<String> iterable) {
+    List<T> result = new ArrayList<>();
+    for (String s : iterable) {
+      findById(s).ifPresent(x -> result.add(x));
+    }
+    return result;
   }
 
   /* (non-Javadoc)
@@ -207,6 +236,11 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
     return strategy.count();
   }
 
+  @Override
+  public void deleteById(String id) {
+    operations.delete(new ORecordId(id));
+  }
+
   /* (non-Javadoc)
    * @see org.springframework.data.orient.repository.OrientRepository#count(java.lang.String)
    */
@@ -252,6 +286,13 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
   @Transactional(readOnly = false)
   public void delete(T entity) {
     operations.delete(entity);
+  }
+
+  @Override
+  public void deleteAll(Iterable<? extends T> iterable) {
+    for (T t : iterable) {
+      delete(t);
+    }
   }
 
   /* (non-Javadoc)
@@ -369,7 +410,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
 
     Sort sort = pageable.getSort();
     SelectLimitStep<? extends Record> limitStep = sort == null ? joinStep : joinStep.orderBy(QueryUtils.toOrders(sort));
-    Query query = pageable == null ? limitStep : limitStep.limit(pageable.getPageSize()).offset(pageable.getOffset());
+    Query query = pageable == null ? limitStep : limitStep.limit(pageable.getPageSize()).offset((int) pageable.getOffset());
 
     return query.getSQL(ParamType.INLINED);
   }

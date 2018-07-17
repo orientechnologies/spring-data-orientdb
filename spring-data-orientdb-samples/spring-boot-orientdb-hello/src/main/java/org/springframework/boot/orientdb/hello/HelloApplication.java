@@ -85,7 +85,7 @@ public class HelloApplication implements CommandLineRunner {
             
             persons.add(kaitlin);
             
-            repository.save(persons);
+            repository.saveAll(persons);
         }
     }
 }
