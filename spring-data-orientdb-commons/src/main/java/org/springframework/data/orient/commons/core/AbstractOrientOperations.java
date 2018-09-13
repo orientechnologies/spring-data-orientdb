@@ -304,17 +304,6 @@ public abstract class AbstractOrientOperations<T> implements OrientOperations<T>
   }
 
   @Override
-  public T load(T entity, String fetchPlan, boolean ignoreCache, boolean loadTombstone, OStorage.LOCKING_STRATEGY lockingStrategy) {
-    return dbf.db().load(entity, fetchPlan, ignoreCache, loadTombstone, lockingStrategy);
-  }
-
-  @Override
-  public T load(ORID recordId, String fetchPlan, boolean ignoreCache, boolean loadTombstone,
-      OStorage.LOCKING_STRATEGY lockingStrategy) {
-    return dbf.db().load(recordId, fetchPlan, ignoreCache, loadTombstone, lockingStrategy);
-  }
-
-  @Override
   public <S extends T> S save(S entity) {
     return dbf.db().save(entity);
   }

@@ -128,10 +128,6 @@ public interface OrientOperations<T> {
 
   T load(ORID recordId, String fetchPlan, boolean ignoreCache);
 
-  T load(T entity, String fetchPlan, boolean ignoreCache, boolean loadTombstone, OStorage.LOCKING_STRATEGY lockingStrategy);
-
-  T load(ORID recordId, String fetchPlan, boolean ignoreCache, boolean loadTombstone, OStorage.LOCKING_STRATEGY lockingStrategy);
-
   <S extends T> S save(S entity);
 
   <S extends T> S save(S entity, String cluster);
