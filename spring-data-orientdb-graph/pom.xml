@@ -25,6 +25,12 @@
         <dependency>
             <groupId>com.orientechnologies</groupId>
             <artifactId>orientdb-graphdb</artifactId>
+<exclusions>
+        <exclusion>  
+          <groupId>commons-lang</groupId>
+          <artifactId>commons-lang</artifactId>
+        </exclusion>
+      </exclusions> 
         </dependency>
 
     </dependencies>
